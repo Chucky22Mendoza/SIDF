@@ -1,0 +1,82 @@
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  gap: 3px;
+  position: relative;
+  align-self: stretch;
+}
+
+.input-container > label {
+  padding: 0 4px;
+  opacity: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #FFF;
+  transition: all .3s;
+  position: absolute;
+  left: 12px;
+  top: -8px;
+  background-color: transparent;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  overflow: hidden;
+}
+
+.input-container > ::-webkit-outer-spin-button,
+.input-container > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-container > input[type=number] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+.input-container.error > label {
+  color: #D71158 !important;
+}
+
+.input-container > input:disabled + label {
+  color: #A4B3C5;
+}
+
+.input-container:focus-within > label,
+.input-container > input:not(:placeholder-shown) + label,
+.input-container > input:valid + label {
+  opacity: 1 !important;
+  color: #FFF;
+}
+
+.input-container:focus-within > input::placeholder {
+  opacity: 0;
+}
+
+.helper {
+  display: flex;
+  padding: 0 0 0 23px;
+  align-self: stretch;
+}
+
+.helper span {
+  flex: 1 0 0;
+  color: #D71158;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.4px;
+  text-align: left;
+}
+
+.input-container.error > .input-display {
+  border-color: #D71158 !important;
+}
+
+.input-container.error > input {
+  border-color: #D71158 !important;
+}

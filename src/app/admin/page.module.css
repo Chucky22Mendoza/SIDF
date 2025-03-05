@@ -1,0 +1,41 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0;
+  min-height: 100dvh;
+  width: 100dvw;
+  overflow: hidden;
+  background-color: #ffd3d3;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  align-items: flex-start;
+  padding: 16px 16px 16px 12px;
+  gap: 20px;
+  transition: all .3s;
+  align-self: stretch;
+  border-radius: 10px;
+}
+
+.subcontent {
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  flex: 1 0 0;
+  align-self: stretch;
+  border-radius: 15px;
+  background: #FFF;
+  overflow-y: scroll;
+  position: relative;
+  transition: all 300ms;
+  width: 100%;
+  max-width: 1600px;
+  align-self: center;
+}

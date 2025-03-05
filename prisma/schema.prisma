@@ -1,0 +1,303 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UnidadMedida {
+  CM
+  PUL
+}
+
+model Tipologia {
+  id     String  @id @default(uuid())
+  name   String
+  filmes Filme[]
+
+  @@map("tipologia")
+}
+
+model Fondo {
+  id     String  @id @default(uuid())
+  name   String
+  filmes Filme[]
+
+  @@map("fondo")
+}
+
+model Coleccion {
+  id     String  @id @default(uuid())
+  name   String
+  filmes Filme[]
+
+  @@map("coleccion")
+}
+
+model Estante {
+  id     String  @id @default(uuid())
+  name   String
+  filmes Filme[]
+
+  @@map("estante")
+}
+
+model Caja {
+  id     String  @id @default(uuid())
+  name   String
+  filmes Filme[]
+
+  @@map("caja")
+}
+
+model Director {
+  id            String        @id @default(uuid())
+  name          String
+  descripciones Descripcion[]
+
+  @@map("director")
+}
+
+model Produccion {
+  id              String            @id @default(uuid())
+  name            String
+  detProducciones DetProducciones[]
+
+  @@map("produccion")
+}
+
+model Estelar {
+  id           String         @id @default(uuid())
+  name         String
+  detEstelares DetEstelares[]
+
+  @@map("estelar")
+}
+
+model Genero {
+  id         String       @id @default(uuid())
+  name       String
+  detGeneros DetGeneros[]
+
+  @@map("genero")
+}
+
+model Pais {
+  id            String        @id @default(uuid())
+  name          String
+  descripciones Descripcion[]
+
+  @@map("pais")
+}
+
+model Soporte {
+  id              String            @id @default(uuid())
+  name            String
+  caracteristicas Caracteristicas[]
+
+  @@map("soporte")
+}
+
+model Tecnica {
+  id              String            @id @default(uuid())
+  name            String
+  caracteristicas Caracteristicas[]
+
+  @@map("tecnica")
+}
+
+model Catalogador {
+  id              String          @id @default(uuid())
+  name            String
+  accesibilidades Accesibilidad[]
+
+  @@map("catalogador")
+}
+
+model Capturista {
+  id              String          @id @default(uuid())
+  name            String
+  accesibilidades Accesibilidad[]
+
+  @@map("capturista")
+}
+
+model Archivo {
+  id              String          @id @default(uuid())
+  name            String
+  accesibilidades Accesibilidad[]
+
+  @@map("archivo")
+}
+
+model Conservacion {
+  id   String @id @default(uuid())
+  name String
+
+  @@map("conservacion")
+}
+
+model Intervencion {
+  id                          String               @id @default(uuid())
+  name                        String
+  estadoConservacionSugerida  EstadoConservacion[] @relation("IntervencionEstadoConservacion_Sugerida")
+  estadoConservacionRealizada EstadoConservacion[] @relation("IntervencionEstadoConservacion_Realizada")
+
+  @@map("intervencion")
+}
+
+model Ubicacion {
+  id                   String               @id @default(uuid())
+  name                 String
+  estadoConservaciones EstadoConservacion[]
+
+  @@map("ubicacion")
+}
+
+model Rol {
+  id       String    @id @default(uuid())
+  name     String
+  usuarios Usuario[]
+
+  @@map("rol")
+}
+
+model Usuario {
+  id       String @id @default(uuid())
+  fullname String
+  nickname String @unique
+  email    String @unique
+  password String
+  rol      Rol    @relation(fields: [fkIdRol], references: [id])
+  fkIdRol  String @map("fk_id_rol")
+
+  @@map("usuario")
+}
+
+model Filme {
+  id                 String               @id @default(uuid())
+  titulo             String
+  copias             Int
+  imagen1            String?
+  imagen2            String?
+  imagen3            String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  deletedAt          DateTime?
+  tipologia          Tipologia            @relation(fields: [fkIdTipologia], references: [id])
+  fondo              Fondo                @relation(fields: [fkIdFondo], references: [id])
+  coleccion          Coleccion            @relation(fields: [fkIdColeccion], references: [id])
+  caja               Caja                 @relation(fields: [fkIdCaja], references: [id])
+  estante            Estante              @relation(fields: [fkIdEstante], references: [id])
+  fkIdTipologia      String               @map("fk_id_tipologia")
+  fkIdFondo          String               @map("fk_id_fondo")
+  fkIdColeccion      String               @map("fk_id_coleccion")
+  fkIdCaja           String               @map("fk_id_caja")
+  fkIdEstante        String               @map("fk_id_estante")
+  Descripcion        Descripcion[]
+  DetProducciones    DetProducciones[]
+  DetEstelares       DetEstelares[]
+  DetGeneros         DetGeneros[]
+  Caracteristicas    Caracteristicas[]
+  Accesibilidad      Accesibilidad[]
+  EstadoConservacion EstadoConservacion[]
+
+  @@map("filme")
+}
+
+model Descripcion {
+  id           String   @id @default(uuid())
+  yearRelease  Int      @map("year_release")
+  filme        Filme    @relation(fields: [fkIdFilme], references: [id])
+  director     Director @relation(fields: [fkIdDirector], references: [id])
+  pais         Pais     @relation(fields: [fkIdPais], references: [id])
+  fkIdFilme    String   @map("fk_id_filme")
+  fkIdDirector String   @map("fk_id_director")
+  fkIdPais     String   @map("fk_id_pais")
+
+  @@map("descripcion")
+}
+
+model DetProducciones {
+  id             String     @id @default(uuid())
+  filme          Filme      @relation(fields: [fkIdFilme], references: [id])
+  produccion     Produccion @relation(fields: [fkIdProduccion], references: [id])
+  fkIdFilme      String     @map("fk_id_filme")
+  fkIdProduccion String     @map("fk_id_produccion")
+
+  @@map("det_producciones")
+}
+
+model DetEstelares {
+  id          String  @id @default(uuid())
+  filme       Filme   @relation(fields: [fkIdFilme], references: [id])
+  estelar     Estelar @relation(fields: [fkIdEstelar], references: [id])
+  fkIdFilme   String  @map("fk_id_filme")
+  fkIdEstelar String  @map("fk_id_estelar")
+
+  @@map("det_estelares")
+}
+
+model DetGeneros {
+  id         String @id @default(uuid())
+  filme      Filme  @relation(fields: [fkIdFilme], references: [id])
+  genero     Genero @relation(fields: [fkIdGenero], references: [id])
+  fkIdFilme  String @map("fk_id_filme")
+  fkIdGenero String @map("fk_id_genero")
+
+  @@map("det_generos")
+}
+
+model Caracteristicas {
+  id          String       @id @default(uuid())
+  alto        Float
+  ancho       Float
+  tipoMedida  UnidadMedida @default(CM) @map("tipo_medida")
+  filme       Filme        @relation(fields: [fkIdFilme], references: [id])
+  soporte     Soporte      @relation(fields: [fkIdSoporte], references: [id])
+  tecnica     Tecnica      @relation(fields: [fkIdTecnica], references: [id])
+  fkIdFilme   String       @map("fk_id_filme")
+  fkIdSoporte String       @map("fk_id_soporte")
+  fkIdTecnica String       @map("fk_id_tecnica")
+
+  @@map("caracteristicas")
+}
+
+model Accesibilidad {
+  id                  String      @id @default(uuid())
+  consulta            Boolean
+  reproduccion        Boolean
+  reproduccionDigital Boolean     @map("reproduccion_digital")
+  observaciones       String?     @default("Sin observaciones")
+  yearCataloging      Int         @map("year_cataloging")
+  organizacionPrevia  String?     @map("organizacion_previa")
+  filme               Filme       @relation(fields: [fkIdFilme], references: [id])
+  catalogador         Catalogador @relation(fields: [fkIdCatalogador], references: [id])
+  capturista          Capturista  @relation(fields: [fkIdCapturista], references: [id])
+  archivo             Archivo     @relation(fields: [fkIdArchivo], references: [id])
+  fkIdFilme           String      @map("fk_id_filme")
+  fkIdCatalogador     String      @map("fk_id_catalogador")
+  fkIdCapturista      String      @map("fk_id_capturista")
+  fkIdArchivo         String      @map("fk_id_archivo")
+
+  @@map("accesibilidad")
+}
+
+model EstadoConservacion {
+  id                        String        @id @default(uuid())
+  numCopia                  Int?          @map("num_copia")
+  observaciones             String?       @default("Sin observaciones")
+  consulta                  Boolean?      @default(true)
+  filme                     Filme         @relation(fields: [fkIdFilme], references: [id])
+  intervencionSugerida      Intervencion? @relation("IntervencionEstadoConservacion_Sugerida", fields: [fkIdIntervencionSugerida], references: [id])
+  intervencionRealizada     Intervencion? @relation("IntervencionEstadoConservacion_Realizada", fields: [fkIdIntervencionRealizada], references: [id])
+  ubicacion                 Ubicacion     @relation(fields: [fkIdUbicacion], references: [id])
+  fkIdFilme                 String        @map("fk_id_filme")
+  fkIdIntervencionSugerida  String?       @map("fk_id_intervencion_sugerida")
+  fkIdIntervencionRealizada String?       @map("fk_id_intervencion_realizada")
+  fkIdUbicacion             String        @map("fk_id_ubicacion")
+
+  @@map("estado_conservacion")
+}

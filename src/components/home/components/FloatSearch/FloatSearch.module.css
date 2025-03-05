@@ -1,0 +1,61 @@
+@keyframes jackInTheBox {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.1) rotate(30deg);
+    transform: scale(0.1) rotate(30deg);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+  }
+  50% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+  70% {
+    -webkit-transform: rotate(3deg);
+    transform: rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+.btn-search {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  color: #fff;
+  z-index: 2;
+
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: jackInTheBox;
+  animation-name: jackInTheBox;
+}
+
+.btn-search img {
+  text-align: center;
+  font-size: 16px;
+  color: #000;
+  height: 180px;
+  background-color: rgba(255, 255, 255, .65);
+  border-radius: 1rem;
+  padding: 0.2rem 0.2rem;
+  margin: 0 auto;
+  border: solid 0rem;
+  transition: all .2s;
+  -moz-transition: all .2s;
+  -webkit-transition: all .2s;
+  -o-transition: all .2s;
+  border: solid transparent;
+  border-width: 0 .4rem;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+.btn-search img:hover {
+  border-color: #000;
+}
