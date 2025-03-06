@@ -7,297 +7,302 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UnidadMedida {
-  CM
-  PUL
-}
-
 model Tipologia {
-  id     String  @id @default(uuid())
-  name   String
+  id     String  @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name   String  @db.VarChar
   filmes Filme[]
 
   @@map("tipologia")
 }
 
 model Fondo {
-  id     String  @id @default(uuid())
-  name   String
+  id     String  @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name   String  @db.VarChar
   filmes Filme[]
 
   @@map("fondo")
 }
 
 model Coleccion {
-  id     String  @id @default(uuid())
-  name   String
+  id     String  @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name   String  @db.VarChar
   filmes Filme[]
 
   @@map("coleccion")
 }
 
 model Estante {
-  id     String  @id @default(uuid())
-  name   String
+  id     String  @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name   String  @db.VarChar
   filmes Filme[]
 
   @@map("estante")
 }
 
 model Caja {
-  id     String  @id @default(uuid())
-  name   String
+  id     String  @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name   String  @db.VarChar
   filmes Filme[]
 
   @@map("caja")
 }
 
 model Director {
-  id            String        @id @default(uuid())
-  name          String
+  id            String        @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name          String        @db.VarChar
   descripciones Descripcion[]
 
   @@map("director")
 }
 
 model Produccion {
-  id              String            @id @default(uuid())
-  name            String
+  id              String            @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name            String            @db.VarChar
   detProducciones DetProducciones[]
 
   @@map("produccion")
 }
 
 model Estelar {
-  id           String         @id @default(uuid())
-  name         String
+  id           String         @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name         String         @db.VarChar
   detEstelares DetEstelares[]
 
   @@map("estelar")
 }
 
 model Genero {
-  id         String       @id @default(uuid())
-  name       String
+  id         String       @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name       String       @db.VarChar
   detGeneros DetGeneros[]
 
   @@map("genero")
 }
 
 model Pais {
-  id            String        @id @default(uuid())
-  name          String
+  id            String        @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name          String        @db.VarChar
   descripciones Descripcion[]
 
   @@map("pais")
 }
 
 model Soporte {
-  id              String            @id @default(uuid())
-  name            String
+  id              String            @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name            String            @db.VarChar
   caracteristicas Caracteristicas[]
 
   @@map("soporte")
 }
 
 model Tecnica {
-  id              String            @id @default(uuid())
-  name            String
+  id              String            @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name            String            @db.VarChar
   caracteristicas Caracteristicas[]
 
   @@map("tecnica")
 }
 
 model Catalogador {
-  id              String          @id @default(uuid())
-  name            String
+  id              String          @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name            String          @db.VarChar
   accesibilidades Accesibilidad[]
 
   @@map("catalogador")
 }
 
 model Capturista {
-  id              String          @id @default(uuid())
-  name            String
+  id              String          @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name            String          @db.VarChar
   accesibilidades Accesibilidad[]
 
   @@map("capturista")
 }
 
 model Archivo {
-  id              String          @id @default(uuid())
-  name            String
+  id              String          @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name            String          @db.VarChar
   accesibilidades Accesibilidad[]
 
   @@map("archivo")
 }
 
 model Conservacion {
-  id   String @id @default(uuid())
-  name String
+  id   String @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name String @db.VarChar
 
   @@map("conservacion")
 }
 
 model Intervencion {
-  id                          String               @id @default(uuid())
-  name                        String
-  estadoConservacionSugerida  EstadoConservacion[] @relation("IntervencionEstadoConservacion_Sugerida")
+  id                          String               @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name                        String               @db.VarChar
   estadoConservacionRealizada EstadoConservacion[] @relation("IntervencionEstadoConservacion_Realizada")
+  estadoConservacionSugerida  EstadoConservacion[] @relation("IntervencionEstadoConservacion_Sugerida")
 
   @@map("intervencion")
 }
 
 model Ubicacion {
-  id                   String               @id @default(uuid())
-  name                 String
+  id                   String               @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name                 String               @db.VarChar
   estadoConservaciones EstadoConservacion[]
 
   @@map("ubicacion")
 }
 
 model Rol {
-  id       String    @id @default(uuid())
-  name     String
+  id       String    @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name     String    @db.VarChar
   usuarios Usuario[]
 
   @@map("rol")
 }
 
 model Usuario {
-  id       String @id @default(uuid())
-  fullname String
-  nickname String @unique
-  email    String @unique
-  password String
-  rol      Rol    @relation(fields: [fkIdRol], references: [id])
-  fkIdRol  String @map("fk_id_rol")
+  id       String @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  fullname String @db.VarChar
+  nickname String @unique(map: "u_nickname") @db.VarChar
+  email    String @unique(map: "u_email") @db.VarChar
+  password String @db.VarChar
+  fkIdRol  String @map("fk_id_rol") @db.Uuid
+  rol      Rol    @relation(fields: [fkIdRol], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rol_usuario")
 
   @@map("usuario")
 }
 
 model Filme {
-  id                 String               @id @default(uuid())
-  titulo             String
+  id                 String               @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  titulo             String               @db.VarChar
   copias             Int
-  imagen1            String?
-  imagen2            String?
-  imagen3            String?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
-  deletedAt          DateTime?
-  tipologia          Tipologia            @relation(fields: [fkIdTipologia], references: [id])
-  fondo              Fondo                @relation(fields: [fkIdFondo], references: [id])
-  coleccion          Coleccion            @relation(fields: [fkIdColeccion], references: [id])
-  caja               Caja                 @relation(fields: [fkIdCaja], references: [id])
-  estante            Estante              @relation(fields: [fkIdEstante], references: [id])
-  fkIdTipologia      String               @map("fk_id_tipologia")
-  fkIdFondo          String               @map("fk_id_fondo")
-  fkIdColeccion      String               @map("fk_id_coleccion")
-  fkIdCaja           String               @map("fk_id_caja")
-  fkIdEstante        String               @map("fk_id_estante")
+  imagen1            String?              @db.VarChar
+  imagen2            String?              @db.VarChar
+  imagen3            String?              @db.VarChar
+  createdAt          DateTime?            @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime?            @default(now()) @updatedAt @db.Timestamptz(6)
+  deletedAt          DateTime?            @db.Timestamptz(6)
+  fkIdTipologia      String               @map("fk_id_tipologia") @db.Uuid
+  fkIdFondo          String               @map("fk_id_fondo") @db.Uuid
+  fkIdColeccion      String               @map("fk_id_coleccion") @db.Uuid
+  fkIdCaja           String               @map("fk_id_caja") @db.Uuid
+  fkIdEstante        String               @map("fk_id_estante") @db.Uuid
+  Accesibilidad      Accesibilidad[]
+  Caracteristicas    Caracteristicas[]
   Descripcion        Descripcion[]
-  DetProducciones    DetProducciones[]
   DetEstelares       DetEstelares[]
   DetGeneros         DetGeneros[]
-  Caracteristicas    Caracteristicas[]
-  Accesibilidad      Accesibilidad[]
+  DetProducciones    DetProducciones[]
   EstadoConservacion EstadoConservacion[]
+  caja               Caja                 @relation(fields: [fkIdCaja], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_caja")
+  coleccion          Coleccion            @relation(fields: [fkIdColeccion], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_coleccion")
+  estante            Estante              @relation(fields: [fkIdEstante], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_estante")
+  fondo              Fondo                @relation(fields: [fkIdFondo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_fondo")
+  tipologia          Tipologia            @relation(fields: [fkIdTipologia], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_tipologia")
 
   @@map("filme")
 }
 
 model Descripcion {
-  id           String   @id @default(uuid())
+  id           String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
   yearRelease  Int      @map("year_release")
-  filme        Filme    @relation(fields: [fkIdFilme], references: [id])
-  director     Director @relation(fields: [fkIdDirector], references: [id])
-  pais         Pais     @relation(fields: [fkIdPais], references: [id])
-  fkIdFilme    String   @map("fk_id_filme")
-  fkIdDirector String   @map("fk_id_director")
-  fkIdPais     String   @map("fk_id_pais")
+  fkIdFilme    String   @map("fk_id_filme") @db.Uuid
+  fkIdDirector String   @map("fk_id_director") @db.Uuid
+  fkIdPais     String   @map("fk_id_pais") @db.Uuid
+  filme        Filme    @relation(fields: [fkIdFilme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_descripcion")
+  director     Director @relation(fields: [fkIdDirector], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_director")
+  pais         Pais     @relation(fields: [fkIdPais], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_pais")
 
   @@map("descripcion")
 }
 
 model DetProducciones {
-  id             String     @id @default(uuid())
-  filme          Filme      @relation(fields: [fkIdFilme], references: [id])
-  produccion     Produccion @relation(fields: [fkIdProduccion], references: [id])
-  fkIdFilme      String     @map("fk_id_filme")
-  fkIdProduccion String     @map("fk_id_produccion")
+  id             String     @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  fkIdFilme      String     @map("fk_id_filme") @db.Uuid
+  fkIdProduccion String     @map("fk_id_produccion") @db.Uuid
+  produccion     Produccion @relation(fields: [fkIdProduccion], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_det_producciones")
+  filme          Filme      @relation(fields: [fkIdFilme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_producciones_descripcion")
 
   @@map("det_producciones")
 }
 
 model DetEstelares {
-  id          String  @id @default(uuid())
-  filme       Filme   @relation(fields: [fkIdFilme], references: [id])
-  estelar     Estelar @relation(fields: [fkIdEstelar], references: [id])
-  fkIdFilme   String  @map("fk_id_filme")
-  fkIdEstelar String  @map("fk_id_estelar")
+  id          String  @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  fkIdFilme   String  @map("fk_id_filme") @db.Uuid
+  fkIdEstelar String  @map("fk_id_estelar") @db.Uuid
+  estelar     Estelar @relation(fields: [fkIdEstelar], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_det_estelares")
+  filme       Filme   @relation(fields: [fkIdFilme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_estelares_descripcion")
 
   @@map("det_estelares")
 }
 
 model DetGeneros {
-  id         String @id @default(uuid())
-  filme      Filme  @relation(fields: [fkIdFilme], references: [id])
-  genero     Genero @relation(fields: [fkIdGenero], references: [id])
-  fkIdFilme  String @map("fk_id_filme")
-  fkIdGenero String @map("fk_id_genero")
+  id         String @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  fkIdFilme  String @map("fk_id_filme") @db.Uuid
+  fkIdGenero String @map("fk_id_genero") @db.Uuid
+  genero     Genero @relation(fields: [fkIdGenero], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_det_generos")
+  filme      Filme  @relation(fields: [fkIdFilme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_generos_descripcion")
 
   @@map("det_generos")
 }
 
 model Caracteristicas {
-  id          String       @id @default(uuid())
-  alto        Float
-  ancho       Float
-  tipoMedida  UnidadMedida @default(CM) @map("tipo_medida")
-  filme       Filme        @relation(fields: [fkIdFilme], references: [id])
-  soporte     Soporte      @relation(fields: [fkIdSoporte], references: [id])
-  tecnica     Tecnica      @relation(fields: [fkIdTecnica], references: [id])
-  fkIdFilme   String       @map("fk_id_filme")
-  fkIdSoporte String       @map("fk_id_soporte")
-  fkIdTecnica String       @map("fk_id_tecnica")
+  id          String        @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  alto        Decimal       @db.Decimal(2, 0)
+  ancho       Decimal       @db.Decimal(2, 0)
+  tipoMedida  unidad_medida @default(CM) @map("tipo_medida")
+  fkIdFilme   String        @map("fk_id_filme") @db.Uuid
+  fkIdSoporte String        @map("fk_id_soporte") @db.Uuid
+  fkIdTecnica String        @map("fk_id_tecnica") @db.Uuid
+  filme       Filme         @relation(fields: [fkIdFilme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_caracteristicas")
+  soporte     Soporte       @relation(fields: [fkIdSoporte], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_soporte")
+  tecnica     Tecnica       @relation(fields: [fkIdTecnica], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_tecnica")
 
   @@map("caracteristicas")
 }
 
 model Accesibilidad {
-  id                  String      @id @default(uuid())
+  id                  String      @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
   consulta            Boolean
   reproduccion        Boolean
   reproduccionDigital Boolean     @map("reproduccion_digital")
-  observaciones       String?     @default("Sin observaciones")
+  observaciones       String?     @default("Sin observaciones") @db.VarChar
   yearCataloging      Int         @map("year_cataloging")
-  organizacionPrevia  String?     @map("organizacion_previa")
-  filme               Filme       @relation(fields: [fkIdFilme], references: [id])
-  catalogador         Catalogador @relation(fields: [fkIdCatalogador], references: [id])
-  capturista          Capturista  @relation(fields: [fkIdCapturista], references: [id])
-  archivo             Archivo     @relation(fields: [fkIdArchivo], references: [id])
-  fkIdFilme           String      @map("fk_id_filme")
-  fkIdCatalogador     String      @map("fk_id_catalogador")
-  fkIdCapturista      String      @map("fk_id_capturista")
-  fkIdArchivo         String      @map("fk_id_archivo")
+  organizacionPrevia  String?     @map("organizacion_previa") @db.VarChar
+  fkIdFilme           String      @map("fk_id_filme") @db.Uuid
+  fkIdCatalogador     String      @map("fk_id_catalogador") @db.Uuid
+  fkIdCapturista      String      @map("fk_id_capturista") @db.Uuid
+  fkIdArchivo         String      @map("fk_id_archivo") @db.Uuid
+  filme               Filme       @relation(fields: [fkIdFilme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_accesibilidad")
+  archivo             Archivo     @relation(fields: [fkIdArchivo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_archivo")
+  capturista          Capturista  @relation(fields: [fkIdCapturista], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_capturista")
+  catalogador         Catalogador @relation(fields: [fkIdCatalogador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_catalogador")
 
   @@map("accesibilidad")
 }
 
 model EstadoConservacion {
-  id                        String        @id @default(uuid())
+  id                        String        @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
   numCopia                  Int?          @map("num_copia")
-  observaciones             String?       @default("Sin observaciones")
+  observaciones             String?       @default("Sin observaciones") @db.VarChar
   consulta                  Boolean?      @default(true)
-  filme                     Filme         @relation(fields: [fkIdFilme], references: [id])
-  intervencionSugerida      Intervencion? @relation("IntervencionEstadoConservacion_Sugerida", fields: [fkIdIntervencionSugerida], references: [id])
-  intervencionRealizada     Intervencion? @relation("IntervencionEstadoConservacion_Realizada", fields: [fkIdIntervencionRealizada], references: [id])
-  ubicacion                 Ubicacion     @relation(fields: [fkIdUbicacion], references: [id])
-  fkIdFilme                 String        @map("fk_id_filme")
-  fkIdIntervencionSugerida  String?       @map("fk_id_intervencion_sugerida")
-  fkIdIntervencionRealizada String?       @map("fk_id_intervencion_realizada")
-  fkIdUbicacion             String        @map("fk_id_ubicacion")
+  fkIdFilme                 String        @map("fk_id_filme") @db.Uuid
+  fkIdIntervencionSugerida  String?       @map("fk_id_intervencion_sugerida") @db.Uuid
+  fkIdIntervencionRealizada String?       @map("fk_id_intervencion_realizada") @db.Uuid
+  fkIdUbicacion             String        @map("fk_id_ubicacion") @db.Uuid
+  filme                     Filme         @relation(fields: [fkIdFilme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_estado_conservacion")
+  intervencionRealizada     Intervencion? @relation("IntervencionEstadoConservacion_Realizada", fields: [fkIdIntervencionRealizada], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_intervencion_realizada")
+  intervencionSugerida      Intervencion? @relation("IntervencionEstadoConservacion_Sugerida", fields: [fkIdIntervencionSugerida], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_intervencion_sugerida")
+  ubicacion                 Ubicacion     @relation(fields: [fkIdUbicacion], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_ubicacion")
 
   @@map("estado_conservacion")
+}
+
+enum UnidadMedida {
+  CM
+  PUL
+}
+
+enum unidad_medida {
+  CM
+  PUL
 }
