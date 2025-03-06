@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GeneralTab } from "./tabs/general-tab";
 import { DescriptionTab } from "./tabs/description-tab";
 import { CharacteristicsTab } from "./tabs/characteristics-tab";
 import { AccessibilityTab } from "./tabs/accessibility-tab";
@@ -41,7 +40,7 @@ export function FilmForm() {
               <TabsTrigger value="accessibility">Accesibilidad</TabsTrigger>
             </TabsList>
             <TabsContent value="general">
-              <GeneralTab />
+              {/* <GeneralTab /> */}
             </TabsContent>
             <TabsContent value="description">
               <DescriptionTab />
