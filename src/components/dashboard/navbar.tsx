@@ -12,9 +12,12 @@ import Image from 'next/image';
 import { useLoginForm } from '@/hooks/useLoginForm';
 import { setAuthToken } from '@/lib/fetchWithAuth';
 import { useRouter } from 'next/navigation';
+import { useRoleUserLoggedStore } from '@/store/RoleUserLoggedStore';
 
 export function Navbar() {
   const { handleLogOut } = useLoginForm();
+  const setRole = useRoleUserLoggedStore((state) => state.setRole);
+  const setUser = useRoleUserLoggedStore((state) => state.setUser);
   const router = useRouter();
 
   return (
@@ -40,6 +43,8 @@ export function Navbar() {
                 onClick={async () => {
                   await handleLogOut();
                   setAuthToken(undefined);
+                  setRole(null);
+                  setUser(null);
                   router.push('/login');
                 }}
               >

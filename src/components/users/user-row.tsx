@@ -11,7 +11,7 @@ type Props = {
 };
 
 function UserRow({ user, onEdit, onDelete }: Props) {
-  const userId = useRoleUserLoggedStore((state) => state.userId);
+  const userId = useRoleUserLoggedStore((state) => state.user?.id);
   const isUserLogged = user.id === userId;
 
   return (

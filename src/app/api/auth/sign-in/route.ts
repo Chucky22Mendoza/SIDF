@@ -4,6 +4,7 @@ import { compareValues } from "../utils";
 import { sign } from "jsonwebtoken";
 import { Usuario } from "@prisma/client";
 import { cookies } from "next/headers";
+import { IUserInfo } from "@/domain/Users";
 
 const jwtKey = process.env.SECRET_JWT_KEY;
 
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
     const user = await prisma.usuario.findFirst({
       where: {
         nickname,
-      },
+      }
     });
 
     if (!user) {
@@ -54,12 +55,19 @@ export async function POST(request: NextRequest) {
         sameSite: 'strict',
       });
 
+      const userReturn: IUserInfo = {
+        id: user.id,
+        fullname: user.fullname,
+        nickname: user.nickname,
+        email: user.email,
+      };
+
       return NextResponse.json({
         message: 'Usuario encontrado',
         data: {
           token: tokenCreated,
           role: user.fkIdRol,
-          userId: user.id,
+          user: userReturn,
         },
       }, {
         status: 200,

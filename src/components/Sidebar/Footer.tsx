@@ -1,11 +1,13 @@
 'use client';
 
-import { fetchWithAuth, setAuthToken } from '@/lib/fetchWithAuth';
+import { setAuthToken } from '@/lib/fetchWithAuth';
 import styles from './sidebar.module.css';
 import Row from './Row';
-import { LogOut } from 'lucide-react';
+import { LogOut, Smile } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useRoleUserLoggedStore } from '@/store/RoleUserLoggedStore';
+import { useLoginForm } from '@/hooks/useLoginForm';
+import { roles } from '@/domain/Role';
 
 type Props = {
   isCollapsed: boolean;
@@ -14,18 +16,28 @@ type Props = {
 function Footer({ isCollapsed }: Props) {
   const router = useRouter();
   const setRole = useRoleUserLoggedStore((state) => state.setRole);
-  const setUserId = useRoleUserLoggedStore((state) => state.setUserId);
+  const user = useRoleUserLoggedStore((state) => state.user);
+  const roleId = useRoleUserLoggedStore((state) => state.roleId);
+  const setUser = useRoleUserLoggedStore((state) => state.setUser);
+  const { handleLogOut } = useLoginForm();
+
   return (
     <div className={styles['sidebar-user']}>
       <Row
         row={{
-          icon: <LogOut/>,
+          icon: <Smile />,
+          title: user?.nickname ?? roles.find(role => role.id === roleId)?.name ?? 'Anonymous',
+        }}
+      />
+      <Row
+        row={{
+          icon: <LogOut />,
           title: 'Cerrar sesión',
           onClick: async () => {
+            await handleLogOut();
             setAuthToken(undefined);
-            setUserId(null);
             setRole(null);
-            await fetchWithAuth('/api/auth/log-out');
+            setUser(null);
             router.push('/login');
           }
         }}

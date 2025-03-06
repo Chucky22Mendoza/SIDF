@@ -2,7 +2,7 @@
 
 import Header from './Header';
 import styles from './sidebar.module.css';
-import { BarChart, Film, FolderOpen, Image, User } from 'lucide-react';
+import { BarChart, Film, FolderOpen, Image, Users } from 'lucide-react';
 import Row from './Row';
 import { useState } from 'react';
 import Footer from './Footer';
@@ -36,7 +36,7 @@ const menuItems = [
   },
   {
     title: "Usuarios",
-    icon: <User />,
+    icon: <Users />,
     href: "/admin/users",
     isAdmin: true,
   },

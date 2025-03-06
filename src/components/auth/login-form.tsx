@@ -23,7 +23,7 @@ export function LoginForm() {
     handleSubmit,
   } = useLoginForm();
   const setRole = useRoleUserLoggedStore((state) => state.setRole);
-  const setUserId = useRoleUserLoggedStore((state) => state.setUserId);
+  const setUser = useRoleUserLoggedStore((state) => state.setUser);
 
   const onClickAuth = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ export function LoginForm() {
     if (success) {
       setAuthToken(data?.token);
       setRole(data?.role ?? null);
-      setUserId(data?.userId ?? null);
+      setUser(data?.user ?? null);
       toast.success(message);
       if (data?.role === roles[0].id) {
         router.push('/admin/dashboard');

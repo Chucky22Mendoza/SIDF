@@ -1,3 +1,5 @@
+import { Usuario } from "@prisma/client";
+
 export interface IRole {
   id: string;
   name: string;
@@ -10,6 +12,8 @@ export interface IUser {
   email: string;
   rol: IRole;
 }
+
+export type IUserInfo = Omit<Usuario, 'fkIdRol' | 'password'>;
 
 export type UserCreateType = Omit<IUser | 'id', 'rol'> & {
   fk_id_rol: string;

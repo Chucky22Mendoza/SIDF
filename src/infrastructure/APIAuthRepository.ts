@@ -1,4 +1,5 @@
 import { ResponseWrapper } from "@/domain/Response";
+import { IUserInfo } from "@/domain/Users";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { AuthRepository } from "@/repositories/AuthRepository";
 import { Usuario } from "@prisma/client";
@@ -11,7 +12,7 @@ export class APIAuthRepository implements AuthRepository {
     });
   }
 
-  async login(nickname: string, password: string): Promise<ResponseWrapper<{ token: string, role: string, userId: string }>> {
+  async login(nickname: string, password: string): Promise<ResponseWrapper<{ token: string, role: string, user: IUserInfo }>> {
     return await fetchWithAuth('/api/auth/sign-in', {
       method: 'POST',
       body: JSON.stringify({
