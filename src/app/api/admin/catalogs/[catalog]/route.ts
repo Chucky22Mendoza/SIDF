@@ -45,7 +45,7 @@ export async function POST(req: NextRequest, { params }: Props): Promise<NextRes
     const { name } = await req.json();
     const { catalog } = params;
     if (catalog) {
-      const inserted = await prisma.$queryRawUnsafe(`INSERT INTO ${catalog}(name) VALUES($1) RETURNING id`, name) as { id: string }[];
+      const inserted = await prisma.$queryRawUnsafe(`INSERT INTO ${catalog}(id, name) VALUES(DEFAULT, $1) RETURNING id`, name) as { id: string }[];
       return NextResponse.json({
         message: 'Registro insertado en el catálogo',
         data: inserted[0].id,
