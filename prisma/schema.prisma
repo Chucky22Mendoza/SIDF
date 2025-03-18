@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_LOCAL")
 }
 
 model Tipologia {
@@ -48,9 +48,9 @@ model Caja {
 }
 
 model Director {
-  id            String        @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
-  name          String        @db.VarChar
-  descripciones Descripcion[]
+  id             String           @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  name           String           @db.VarChar
+  det_directores det_directores[]
 
   @@map("director")
 }
@@ -186,9 +186,12 @@ model Filme {
   fkIdColeccion      String               @map("fk_id_coleccion") @db.Uuid
   fkIdCaja           String               @map("fk_id_caja") @db.Uuid
   fkIdEstante        String               @map("fk_id_estante") @db.Uuid
+  articulo           String?              @db.VarChar
+  copias_disponibles Int?
   Accesibilidad      Accesibilidad[]
   Caracteristicas    Caracteristicas[]
   Descripcion        Descripcion[]
+  det_directores     det_directores[]
   DetEstelares       DetEstelares[]
   DetGeneros         DetGeneros[]
   DetProducciones    DetProducciones[]
@@ -198,19 +201,18 @@ model Filme {
   estante            Estante              @relation(fields: [fkIdEstante], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_estante")
   fondo              Fondo                @relation(fields: [fkIdFondo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_fondo")
   tipologia          Tipologia            @relation(fields: [fkIdTipologia], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_tipologia")
+  prestamo           prestamo[]
 
   @@map("filme")
 }
 
 model Descripcion {
-  id           String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
-  yearRelease  Int      @map("year_release")
-  fkIdFilme    String   @map("fk_id_filme") @db.Uuid
-  fkIdDirector String   @map("fk_id_director") @db.Uuid
-  fkIdPais     String   @map("fk_id_pais") @db.Uuid
-  filme        Filme    @relation(fields: [fkIdFilme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_descripcion")
-  director     Director @relation(fields: [fkIdDirector], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_director")
-  pais         Pais     @relation(fields: [fkIdPais], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_pais")
+  id          String @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  yearRelease Int    @map("year_release")
+  fkIdFilme   String @map("fk_id_filme") @db.Uuid
+  fkIdPais    String @map("fk_id_pais") @db.Uuid
+  filme       Filme  @relation(fields: [fkIdFilme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_descripcion")
+  pais        Pais   @relation(fields: [fkIdPais], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_pais")
 
   @@map("descripcion")
 }
@@ -297,9 +299,25 @@ model EstadoConservacion {
   @@map("estado_conservacion")
 }
 
-enum UnidadMedida {
-  CM
-  PUL
+model det_directores {
+  id             String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  fk_id_filme    String   @db.Uuid
+  fk_id_director String   @db.Uuid
+  director       Director @relation(fields: [fk_id_director], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_det_directores")
+  filme          Filme    @relation(fields: [fk_id_filme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_directores_descripcion")
+}
+
+model prestamo {
+  id          String    @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  fk_id_filme String    @db.Uuid
+  name        String    @db.VarChar
+  email       String    @db.VarChar
+  phone       String    @db.VarChar
+  curp        String    @db.VarChar
+  createdAt   DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime? @default(now()) @db.Timestamptz(6)
+  deletedAt   DateTime? @db.Timestamptz(6)
+  filme       Filme     @relation(fields: [fk_id_filme], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_filme_prestamo")
 }
 
 enum unidad_medida {

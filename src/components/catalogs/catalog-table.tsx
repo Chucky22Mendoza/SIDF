@@ -20,6 +20,7 @@ import dynamic from "next/dynamic";
 import { ResponseWrapper } from "@/domain/Response";
 import { toast } from "sonner";
 import debounce from 'lodash.debounce';
+import { useDeleteModalStore } from "@/store/DeleteModalStore";
 
 const ItemList = dynamic(() => import('./item-list'));
 
@@ -30,9 +31,11 @@ interface CatalogTableProps {
 }
 
 export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
+  const setOpen = useDeleteModalStore((state) => state.setOpen);
+  const onConfirmCallback = useDeleteModalStore((state) => state.onConfirmCallback);
+  const onCancelCallback = useDeleteModalStore((state) => state.onCancelCallback);
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [listItem, setListItem] = useState<ICatalogData>({
     id: '',
     name: '',
@@ -44,24 +47,6 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
     performPut,
     performDelete,
   } = useCatalogs();
-
-  const listRender = useMemo(() => (
-    list.map((item) => (
-      <Suspense key={item.id}>
-        <ItemList
-          name={item.name}
-          onEdit={() => {
-            setListItem(item);
-            setIsModalOpen(true);
-          }}
-          onDelete={() => {
-            setListItem(item);
-            setIsDeleteModalOpen(true);
-          }}
-        />
-      </Suspense>
-    ))
-  ), [list]);
 
   const onConfirmForm = async () => {
     const { success, message }: ResponseWrapper<string | void> = listItem.id
@@ -82,15 +67,13 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
   const onCancelForm = () => {
     setListItem({ id: '', name: '' });
     setIsModalOpen(false);
-    setIsDeleteModalOpen(false);
   };
 
-  const onConfirmDelete = async () => {
-    const { success, message } = await performDelete(catalog, listItem.id);
+  const onConfirmDelete = async (catalog: CatalogsType, id: string) => {
+    const { success, message } = await performDelete(catalog, id);
     if (success) {
       await get(catalog);
-      setIsDeleteModalOpen(false);
-      setListItem({ id: '', name: '' });
+      setOpen(false);
       toast.success(message);
       return;
     }
@@ -112,6 +95,26 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
     debounceHandlerSearch(catalog, searchText);
   }, [catalog, searchText, debounceHandlerSearch]);
 
+  const listRender = useMemo(() => (
+    list.map((item) => (
+      <Suspense key={item.id}>
+        <ItemList
+          name={item.name}
+          onEdit={() => {
+            setListItem(item);
+            setIsModalOpen(true);
+          }}
+          onDelete={() => {
+            setListItem(item);
+            setOpen(true);
+            onCancelCallback(() => setOpen(false));
+            onConfirmCallback(() => onConfirmDelete(catalog, item.id));
+          }}
+        />
+      </Suspense>
+    ))
+  ), [list]);
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between gap-2">
@@ -120,6 +123,7 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
           <Input
             placeholder="Buscar..."
             className="pl-8"
+            value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
         </div>
@@ -168,24 +172,12 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
                 placeholder={`Nombre de ${title}`}
                 value={listItem?.name}
                 onChange={(e) => setListItem({ ...listItem, name: e.target.value })}
+                autoFocus
               />
             }
           />
         </form>
       </CenterModal>
-
-      <CenterModal
-        isOpen={isDeleteModalOpen}
-        allowConfirm
-        confirmButtonText="Sí, Eliminar"
-        cancelButtonText="Cancelar"
-        hasClickBlurClose
-        title="¿Seguro que deseas eliminar este elemento?"
-        subtitle="Al eliminar este elemento, no podrás recuperarlo."
-        onCancel={onCancelForm}
-        onConfirm={onConfirmDelete}
-        onClose={onCancelForm}
-      />
     </div>
   );
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import HomeViewFactory from "@/components/home/components/HomeViewFactory";
 
 export default function Home() {

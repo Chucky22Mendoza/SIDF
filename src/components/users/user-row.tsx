@@ -23,12 +23,12 @@ function UserRow({ user, onEdit, onDelete }: Props) {
       <TableCell>
         <div className="flex items-center gap-2">
           <Button onClick={onEdit} variant="ghost" size="icon">
-            <Pencil className="h-4 w-4" />
+            <Pencil className="h-4 w-4 text-orange-700" />
           </Button>
           {
             !isUserLogged && (
               <Button onClick={onDelete} variant="ghost" size="icon">
-                <Trash className="h-4 w-4" />
+                <Trash className="h-4 w-4 text-red-700" />
               </Button>
             )
           }

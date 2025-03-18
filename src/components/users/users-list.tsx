@@ -42,6 +42,7 @@ function UsersList() {
             <Input
               placeholder="Buscar..."
               className="pl-8"
+              value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
           </div>

@@ -18,6 +18,7 @@ export function LoginForm() {
   const {
     nickname,
     password,
+    isSubmitted,
     handleNicknameChange,
     handlePasswordChange,
     handleSubmit,
@@ -27,8 +28,9 @@ export function LoginForm() {
 
   const onClickAuth = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    toast.loading('Iniciando sesión...')
     const { success, message, data } = await handleSubmit(e);
-
+    toast.dismiss();
     if (success) {
       setAuthToken(data?.token);
       setRole(data?.role ?? null);
@@ -81,8 +83,8 @@ export function LoginForm() {
               />
             }
           />
-          <Button className="w-full bg-primary hover:bg-primary/90 py-3 text-white" type="submit">
-            Iniciar Sesión
+          <Button className="w-full bg-primary hover:bg-primary/90 py-3 text-white" type="submit" disabled={isSubmitted}>
+            {isSubmitted ? 'Cargando...' : 'Iniciar Sesión'}
           </Button>
         </form>
       </CardContent>

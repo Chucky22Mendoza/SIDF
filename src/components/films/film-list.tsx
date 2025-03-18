@@ -1,18 +1,69 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Eye, Pencil, Trash, Search } from "lucide-react";
-import Link from "next/link";
+import { Search } from "lucide-react";
+import { useFilms } from "@/hooks/useFilms";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useFilmsListStore } from "@/store/FilmsListStore";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "../ui/table";
+import EmptyTable from "../ui/EmptyTable";
+import FilmRow from "./film-row";
+import { useDeleteModalStore } from "@/store/DeleteModalStore";
+import { toast } from "sonner";
+import debounce from "lodash.debounce";
 
 export function FilmList() {
+  const { get, performDelete, performSearch } = useFilms();
+  const films = useFilmsListStore((state) => state.list);
+  const setOpen = useDeleteModalStore((state) => state.setOpen);
+  const onConfirmCallback = useDeleteModalStore((state) => state.onConfirmCallback);
+  const onCancelCallback = useDeleteModalStore((state) => state.onCancelCallback);
+  const [searchText, setSearchText] = useState('');
+
+  useEffect(() => {
+    get();
+  }, []);
+
+  const onConfirmDelete = async (id: string) => {
+    const { success, message } = await performDelete(id);
+    if (success) {
+      await get();
+      setOpen(false);
+      toast.success(message);
+      return;
+    }
+
+    toast.error(message);
+  };
+
+  const handleSearch = async (searchText: string) => {
+    if (searchText === '') {
+      await get();
+      return;
+    }
+    await performSearch(searchText);
+  };
+
+  const debounceHandlerSearch = useCallback(debounce(handleSearch, 300), []);
+
+  useEffect(() => {
+    debounceHandlerSearch(searchText);
+  }, [searchText, debounceHandlerSearch]);
+
+  const listRender = useMemo(() => (
+    films.map((item) => (
+      <Suspense key={item.id}>
+        <FilmRow
+          film={item}
+          onDelete={() => {
+            setOpen(true);
+            onConfirmCallback(() => onConfirmDelete(item.id));
+            onCancelCallback(() => setOpen(false));
+          }}
+        />
+      </Suspense>
+    ))
+  ), [films]);
+
   return (
     <Card className="w-full">
       <div className="p-4 space-y-4">
@@ -22,6 +73,8 @@ export function FilmList() {
             <Input
               placeholder="Buscar registros..."
               className="pl-9"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
         </div>
@@ -34,35 +87,13 @@ export function FilmList() {
                 <TableHead>Director</TableHead>
                 <TableHead>Año</TableHead>
                 <TableHead>Género</TableHead>
+                <TableHead>Copias</TableHead>
                 <TableHead className="w-[100px]">Acciones</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>Ejemplo de Película</TableCell>
-                <TableCell>Director Ejemplo</TableCell>
-                <TableCell>2024</TableCell>
-                <TableCell>Drama</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="icon" asChild>
-                      <Link href="/dashboard/registros/1">
-                        <Eye className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button variant="ghost" size="icon" asChild>
-                      <Link href="/dashboard/registros/1/editar">
-                        <Pencil className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button variant="ghost" size="icon">
-                      <Trash className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            </TableBody>
+            {films.length > 0 && <TableBody>{listRender}</TableBody>}
           </Table>
+          {films.length === 0 && <EmptyTable />}
         </div>
       </div>
     </Card>

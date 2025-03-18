@@ -19,14 +19,14 @@ function ItemList({ name, onEdit, onDelete }: Props) {
               size="icon"
               onClick={onEdit}
             >
-              <Pencil className="h-4 w-4" />
+              <Pencil className="h-4 w-4 text-orange-700" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={onDelete}
             >
-              <Trash className="h-4 w-4" />
+              <Trash className="h-4 w-4 text-red-700" />
             </Button>
           </div>
         </TableCell>

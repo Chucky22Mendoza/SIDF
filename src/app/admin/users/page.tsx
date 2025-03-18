@@ -1,6 +1,6 @@
-import dynamic from "next/dynamic";
+'use client';
 
-const UsersList = dynamic(() => import('@/components/users/users-list'));
+import UsersList from '@/components/users/users-list';
 
 function page() {
   return (

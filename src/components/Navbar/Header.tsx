@@ -19,7 +19,7 @@ function Header({ title, description, buttonText, hrefButton }: Props) {
         buttonText && hrefButton
           ? (
             <Button asChild className="px-3 py-2 hover:bg-white">
-              <Link href="/admin/records/new">
+              <Link href="/admin/records/create">
                 <Plus className="mr-2 h-4 w-4" />
                 {buttonText}
               </Link>

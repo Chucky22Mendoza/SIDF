@@ -12,6 +12,7 @@ import { Input } from "../ui/input";
 import { useUserModalStore } from "@/store/UserModalStore";
 import { roles } from "@/domain/Role";
 import { Select } from "../ui/select";
+import { useDeleteModalStore } from "@/store/DeleteModalStore";
 
 type Props = {
   users: IUser[];
@@ -21,7 +22,9 @@ function UsersTable({ users }: Props) {
   const { get, performDelete, performPost, performPut } = useUsers();
   const isModalOpen = useUserModalStore((state) => state.isOpen);
   const setIsModalOpen = useUserModalStore((state) => state.setIsOpen);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const setOpen = useDeleteModalStore((state) => state.setOpen);
+  const onConfirmCallback = useDeleteModalStore((state) => state.onConfirmCallback);
+  const onCancelCallback = useDeleteModalStore((state) => state.onCancelCallback);
   const [listItem, setListItem] = useState<UserUpdateType>({
     id: '',
     fullname: '',
@@ -30,6 +33,33 @@ function UsersTable({ users }: Props) {
     password: '',
     fk_id_rol: '',
   });
+
+  const onConfirmForm = async () => {
+    const { success, message }: ResponseWrapper<string | void> = listItem.id
+      ? await performPut(listItem as UserUpdateType)
+      : await performPost(listItem as UserCreateType);
+
+    if (success) {
+      toast.success(message);
+      await get();
+      setIsModalOpen(false);
+      return;
+    }
+
+    toast.error(message);
+  };
+
+  const onConfirmDelete = async (id: string) => {
+    const { success, message } = await performDelete(id);
+    if (success) {
+      await get();
+      setOpen(false);
+      toast.success(message);
+      return;
+    }
+
+    toast.error(message);
+  };
 
   const listRender = useMemo(() => (
     users.map((item) => (
@@ -45,52 +75,14 @@ function UsersTable({ users }: Props) {
             setIsModalOpen(true);
           }}
           onDelete={() => {
-            setListItem({
-              ...item,
-              fk_id_rol: item.rol.id,
-              password: '',
-            });
-            setIsDeleteModalOpen(true);
+            setOpen(true);
+            onCancelCallback(() => setOpen(false));
+            onConfirmCallback(() => onConfirmDelete(item.id));
           }}
         />
       </Suspense>
     ))
   ), [users]);
-
-  const onConfirmForm = async () => {
-    const { success, message }: ResponseWrapper<string | void> = listItem.id
-      ? await performPut(listItem as UserUpdateType)
-      : await performPost(listItem as UserCreateType);
-
-    if (success) {
-      toast.success(message);
-      await get();
-      // setListItem({ id: '', name: '' });
-      setIsModalOpen(false);
-      return;
-    }
-
-    toast.error(message);
-  };
-
-  const onCancelForm = () => {
-    // setListItem({ id: '', name: '' });
-    setIsModalOpen(false);
-    setIsDeleteModalOpen(false);
-  };
-
-  const onConfirmDelete = async () => {
-    const { success, message } = await performDelete(listItem.id);
-    if (success) {
-      await get();
-      setIsDeleteModalOpen(false);
-      // setListItem({ id: '', name: '' });
-      toast.success(message);
-      return;
-    }
-
-    toast.error(message);
-  };
 
   return (
     <div className="rounded-md border">
@@ -110,7 +102,7 @@ function UsersTable({ users }: Props) {
 
       <CenterModal
         isOpen={isModalOpen}
-        onClose={onCancelForm}
+        onClose={() => setIsModalOpen(false)}
         hasClickBlurClose
         style={{
           maxWidth: '400px',
@@ -120,7 +112,7 @@ function UsersTable({ users }: Props) {
         allowConfirm
         confirmButtonText="Guardar"
         cancelButtonText="Cancelar"
-        onCancel={onCancelForm}
+        onCancel={() => setIsModalOpen(false)}
         onConfirm={onConfirmForm}
       >
         <form className="flex self-stretch flex-col gap-1">
@@ -191,19 +183,6 @@ function UsersTable({ users }: Props) {
           />
         </form>
       </CenterModal>
-
-      <CenterModal
-        isOpen={isDeleteModalOpen}
-        allowConfirm
-        confirmButtonText="Sí, Eliminar"
-        cancelButtonText="Cancelar"
-        hasClickBlurClose
-        title="¿Seguro que deseas eliminar este elemento?"
-        subtitle="Al eliminar este elemento, no podrás recuperarlo."
-        onCancel={onCancelForm}
-        onConfirm={onConfirmDelete}
-        onClose={onCancelForm}
-      />
     </div>
   );
 }

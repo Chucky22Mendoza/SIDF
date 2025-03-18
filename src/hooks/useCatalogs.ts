@@ -5,7 +5,7 @@ import { ResponseWrapper } from '@/domain/Response';
 import { useCatalogsListStore } from '@/store/CatalogsListStore';
 
 export interface IUseCatalogs {
-  get: (catalog: CatalogsType) => Promise<void>;
+  get: (catalog: CatalogsType) => Promise<ICatalogData[]>;
   performSearch: (catalog: CatalogsType, query: string) => Promise<void>;
   performPost: (catalog: CatalogsType, name: string) => Promise<ResponseWrapper<string>>;
   performPut: (catalog: CatalogsType, catalogData: ICatalogData) => Promise<ResponseWrapper<void>>;
@@ -16,11 +16,13 @@ export const useCatalogs = (): IUseCatalogs => {
   const setList = useCatalogsListStore((state) => state.setList);
   const catalogsRepository: CatalogsRepository = new APICatalogsRepository();
 
-  const get = async (catalog: CatalogsType): Promise<void> => {
+  const get = async (catalog: CatalogsType): Promise<ICatalogData[]> => {
     const { data, success } = await catalogsRepository.getAll(catalog);
     if (success && data) {
       setList(data);
+      return data;
     }
+    return [];
   };
 
   const performSearch = async (catalog: CatalogsType, query: string): Promise<void> => {
