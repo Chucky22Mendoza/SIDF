@@ -1,10 +1,13 @@
 'use client';
 
 import { LoansList } from "@/components/loans/loans-list";
+import { Suspense } from "react";
 
 function page() {
   return (
-    <LoansList />
+    <Suspense>
+      <LoansList />
+    </Suspense>
   );
 }
 
