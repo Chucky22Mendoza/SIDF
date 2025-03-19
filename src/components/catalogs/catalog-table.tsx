@@ -49,6 +49,10 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
   } = useCatalogs();
 
   const onConfirmForm = async () => {
+    if (!listItem.name) {
+      toast.error('El campo Nombre es obligatorio');
+      return;
+    }
     const { success, message }: ResponseWrapper<string | void> = listItem.id
       ? await performPut(catalog, listItem)
       : await performPost(catalog, listItem.name);

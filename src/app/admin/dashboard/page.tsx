@@ -1,8 +1,10 @@
 'use client';
 
+import Dashboard from "@/components/dashboard/dashboard";
+
 function page() {
   return (
-    <div>Dashboard</div>
+    <Dashboard />
   );
 }
 

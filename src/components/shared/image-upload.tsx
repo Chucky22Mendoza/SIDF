@@ -75,8 +75,8 @@ export function ImageUpload({ value, onChangeImage }: Props) {
             src={value}
             alt="Preview"
             className="object-cover"
-            width={100}
-            height={100}
+            width={200}
+            height={200}
             loading="lazy"
           />
           <Button
@@ -84,7 +84,7 @@ export function ImageUpload({ value, onChangeImage }: Props) {
             size="icon"
             className="absolute top-2 right-2"
             onClick={() => {
-              onChangeImage?.(null);
+              onChangeImage?.('');
               if (imgRef.current?.files) {
                 imgRef.current.value = '';
               }

@@ -193,7 +193,7 @@ export function GeneralTab() {
       </div>
 
       <div className="space-y-4 flex self-stretch flex-col items-center">
-        <h3 className="text-lg font-medium flex text-center">Imágenes (mínimo 1)*</h3>
+        <h3 className="text-lg font-medium flex text-center">Imagen*</h3>
         <div className="flex flex-1 gap-3 self-stretch justify-center">
           <ImageUpload
             key="img-upload-1"
@@ -201,22 +201,6 @@ export function GeneralTab() {
             onChangeImage={(base64Image: string | null) => setGeneral({
               ...general,
               imagen1: base64Image,
-            })}
-          />
-          <ImageUpload
-            key="img-upload-2"
-            value={general.imagen2}
-            onChangeImage={(base64Image: string | null) => setGeneral({
-              ...general,
-              imagen2: base64Image,
-            })}
-          />
-          <ImageUpload
-            key="img-upload-3"
-            value={general.imagen3}
-            onChangeImage={(base64Image: string | null) => setGeneral({
-              ...general,
-              imagen3: base64Image,
             })}
           />
         </div>

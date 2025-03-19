@@ -16,7 +16,7 @@ type Props = {
 function Row({ row, isCollapsed }: Props) {
   const pathname = usePathname();
   const classActive = useMemo(() =>
-    pathname === row.href ? styles.active : ''
+    pathname === row.href || pathname.includes(row.href ?? 'null') ? styles.active : ''
   , [pathname, row.href]);
   const ref = React.useRef(null);
 

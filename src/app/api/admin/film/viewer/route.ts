@@ -7,15 +7,27 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
   try {
     const list = await prisma.filme.findMany({
       where: {
-        deletedAt: {
-          equals: null,
-        }
+        AND: [
+          {
+            deletedAt: {
+              equals: null,
+            }
+          },
+          {
+            Accesibilidad: {
+              every: {
+                consulta: true,
+              }
+            }
+          }
+        ]
       },
       select: {
         id: true,
         titulo: true,
         articulo: true,
         copias: true,
+        copias_disponibles: true,
         fondo: {
           select: {
             name: true,
@@ -24,6 +36,28 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
         imagen1: true,
         imagen2: true,
         imagen3: true,
+        Descripcion: {
+          select: {
+            yearRelease: true,
+          }
+        },
+        Caracteristicas: {
+          select: {
+            alto: true,
+            ancho: true,
+            tipoMedida: true,
+            soporte: {
+              select: {
+                name: true,
+              }
+            },
+            tecnica: {
+              select: {
+                name: true,
+              }
+            },
+          }
+        },
         det_directores: {
           select: {
             director: {
@@ -82,16 +116,18 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
       id: film.id,
       title: `${film.articulo} ${film.titulo}`.trim(),
       copies: film.copias,
-      fondo: film.fondo.name,
+      copies_available: film.copias_disponibles ?? 0,
       images: [film.imagen1 ?? '', film.imagen2 ?? '', film.imagen3 ?? ''].filter((image) => image !== ''),
       directors: film.det_directores.map((item) => item.director.name).join(', '),
       genders: film.DetGeneros.map((item) => item.genero.name).join(', '),
       productions: film.DetProducciones.map((item) => item.produccion.name).join(', '),
       stars: film.DetEstelares.map((item) => item.estelar.name).join(', '),
-      archive: film.Accesibilidad[0].archivo.name,
-      isConsutation: film.Accesibilidad[0].consulta,
-      isReproductional: film.Accesibilidad[0].reproduccion,
-      isDigital: film.Accesibilidad[0].reproduccionDigital,
+      filmLibrary: `${film.fondo.name} - ${film.Accesibilidad[0].archivo.name}`,
+      downloadable: film.Accesibilidad[0].reproduccionDigital,
+      available: (film?.copias_disponibles ?? 0) > 0,
+      year: film.Descripcion[0].yearRelease,
+      dimensions: `${film.Caracteristicas[0].ancho}x${film.Caracteristicas[0].alto} ${film.Caracteristicas[0].tipoMedida}`,
+      format: `${film.Caracteristicas[0].tecnica.name} - ${film.Caracteristicas[0].soporte.name}`,
     }));
 
     return NextResponse.json({

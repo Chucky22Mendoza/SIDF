@@ -11,8 +11,8 @@ import { FormField } from "../shared/form-field";
 import { Input } from "../ui/input";
 import { useUserModalStore } from "@/store/UserModalStore";
 import { roles } from "@/domain/Role";
-import { Select } from "../ui/select";
 import { useDeleteModalStore } from "@/store/DeleteModalStore";
+import ReactSelect, { Option, ReactSelectOptions } from "../ui/react-select";
 
 type Props = {
   users: IUser[];
@@ -35,6 +35,29 @@ function UsersTable({ users }: Props) {
   });
 
   const onConfirmForm = async () => {
+    if (
+      !listItem.password ||
+      !listItem.email ||
+      !listItem.fk_id_rol ||
+      !listItem.fullname ||
+      !listItem.nickname
+    ) {
+      toast.error('Todos los campos con * son obligatorios');
+      return;
+    }
+    if (listItem.fullname.length < 4) {
+      toast.error('El nombre debe de ser mayor de 3 caracteres');
+      return;
+    }
+    if (listItem.password.length < 8) {
+      toast.error('La contraseña debe de ser mayor a 7 caracteres');
+      return;
+    }
+    if (listItem.nickname.length < 8) {
+      toast.error('El usuario debe de ser mayor a 7 caracteres');
+      return;
+    }
+
     const { success, message }: ResponseWrapper<string | void> = listItem.id
       ? await performPut(listItem as UserUpdateType)
       : await performPost(listItem as UserCreateType);
@@ -83,6 +106,10 @@ function UsersTable({ users }: Props) {
       </Suspense>
     ))
   ), [users]);
+
+  const roleOptions = useMemo<ReactSelectOptions>(() => (
+    roles.map((role) => ({ value: role.id, label: role.name }))
+  ), [roles]);
 
   return (
     <div className="rounded-md border">
@@ -172,13 +199,13 @@ function UsersTable({ users }: Props) {
             label="Rol"
             className="w-full"
             input={
-              <Select
+              <ReactSelect
                 className="w-full"
-                value={listItem?.fk_id_rol}
-                onChange={(e) => setListItem({ ...listItem, fk_id_rol: e.target.value })}
-              >
-                {roles.map((role) => (<option value={role.id} key={role.id}>{role.name}</option>))}
-              </Select>
+                placeholder="Selecciona un rol"
+                options={roleOptions}
+                value={roleOptions.find((role) => role.value === listItem.fk_id_rol)}
+                onChange={(item) => setListItem({ ...listItem, fk_id_rol: (item as Option).value })}
+              />
             }
           />
         </form>

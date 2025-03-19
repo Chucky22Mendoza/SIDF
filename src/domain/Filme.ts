@@ -11,18 +11,20 @@ export interface IFilmRow {
 
 export interface IFilmView {
   id: string;
-  copies: number;
   title: string;
   directors: string;
   genders: string;
   productions: string;
   stars: string;
-  isDigital: boolean;
-  isReproductional: boolean;
-  isConsutation: boolean;
   images: string[];
-  archive: string;
-  fondo: string;
+  year: number;
+  filmLibrary: string;
+  available: boolean;
+  downloadable: boolean;
+  dimensions: string;
+  format: string;
+  copies: number;
+  copies_available: number;
 }
 
 export type FilmeType = Omit<

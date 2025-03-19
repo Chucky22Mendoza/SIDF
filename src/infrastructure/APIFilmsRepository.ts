@@ -1,4 +1,4 @@
-import { IFilm, IFilmRow } from "@/domain/Filme";
+import { IFilm, IFilmRow, IFilmView } from "@/domain/Filme";
 import { ResponseWrapper } from "@/domain/Response";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { FilmsRepository } from "@/repositories/FilmsRepository";
@@ -30,5 +30,17 @@ export class APIFilmsRepository implements FilmsRepository {
     return await fetchWithAuth<void>(`/api/admin/film/${id}`, {
       method: "DELETE",
     });
+  }
+
+  async getAllViewer(): Promise<ResponseWrapper<IFilmView[]>> {
+    return await fetchWithAuth<IFilmView[]>(`/api/admin/film/viewer`);
+  }
+
+  async searchViewer(query: string): Promise<ResponseWrapper<IFilmView[]>> {
+    return await fetchWithAuth<IFilmView[]>(`/api/admin/film/viewer/search?q=${query}`);
+  }
+
+  async getOneViewer(id: string): Promise<ResponseWrapper<IFilmView>> {
+    return await fetchWithAuth<IFilmView>(`/api/admin/film/viewer/${id}`)
   }
 }

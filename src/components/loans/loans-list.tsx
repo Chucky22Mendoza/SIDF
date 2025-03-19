@@ -55,7 +55,7 @@ export function LoansList() {
   }, []);
 
   const filmsOptions = useMemo<ReactSelectOptions>(() => (
-    films.map(({ title, id }) => ({
+    films.filter(({ copies }) => !copies.includes('0 de')).map(({ title, id }) => ({
       label: title,
       value: id,
     }))
@@ -118,6 +118,29 @@ export function LoansList() {
   };
 
   const onConfirmForm = async () => {
+    if (
+      !data.name ||
+      !data.curp ||
+      !data.email ||
+      !data.phone ||
+      !data.fk_id_filme
+    ) {
+      toast.error('Todos los campos con * son obligatorios');
+      return;
+    }
+    if (data.name.length < 4) {
+      toast.error('El nombre debe de ser mayor de 3 caracteres');
+      return;
+    }
+    if (data.phone.length !== 10) {
+      toast.error('El teléfono debe de ser de 10 caracteres');
+      return;
+    }
+    if (data.curp.length !== 18) {
+      toast.error('La CURP debe de ser de 18 caracteres');
+      return;
+    }
+
     const { success, message }: ResponseWrapper<string | void> = loanId
       ? await performPut(loanId, data)
       : await performPost(data);
@@ -193,7 +216,7 @@ export function LoansList() {
       >
         <form className="space-y-4 flex self-stretch flex-col">
           <FormField
-            label="Nombre"
+            label="Nombre*"
             className="w-full"
             input={
               <Input
@@ -209,7 +232,7 @@ export function LoansList() {
             }
           />
           <FormField
-            label="Filme"
+            label="Filme*"
             className="w-full"
             input={
               <ReactSelect
@@ -225,7 +248,7 @@ export function LoansList() {
             }
           />
           <FormField
-            label="Correo electrónico"
+            label="Correo electrónico*"
             className="w-full"
             input={
               <Input
@@ -241,7 +264,7 @@ export function LoansList() {
             }
           />
           <FormField
-            label="Teléfono"
+            label="Teléfono*"
             className="w-full"
             input={
               <Input
@@ -259,7 +282,7 @@ export function LoansList() {
             }
           />
           <FormField
-            label="CURP"
+            label="CURP*"
             className="w-full"
             input={
               <Input

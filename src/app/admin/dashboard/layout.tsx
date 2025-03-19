@@ -10,7 +10,7 @@ export default function DashboardLayout({
     <>
       <Navbar
         title="Reportes"
-        description="Gestiona los registros de la filmoteca"
+        description="Visualiza los reportes de la filmoteca"
       />
       <section className={styles.subcontent} style={{ marginBottom: '0' }}>
         {children}

@@ -1,0 +1,17 @@
+.back {
+  all: unset;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 20px 0 rgba(6, 29, 61, 0.2);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.btn {
+  display: flex;
+  flex: 1;
+}
