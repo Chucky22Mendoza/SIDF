@@ -7,6 +7,9 @@ export const defaultDashboard: IDashboardResponse = {
   available: 0,
   loans: 0,
   returns: 0,
+  loan_films: [],
+  loans_graph: [],
+  returns_graph: [],
 };
 
 export interface IDashboardState {
