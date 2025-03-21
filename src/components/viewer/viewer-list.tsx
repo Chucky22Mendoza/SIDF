@@ -67,8 +67,8 @@ function ViewerList() {
         <CardContent>
           {
             isGridView
-              ? (<GridImages films={films} />)
-              : (<ListImages films={films} />)
+              ? <GridImages films={films} />
+              : <ListImages films={films} />
           }
         </CardContent>
       </Card>

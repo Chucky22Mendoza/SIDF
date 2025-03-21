@@ -28,10 +28,10 @@ function FilmView({ film }: Props) {
       <div className="p-6">
         <div className="flex gap-2 items-center">
           <div className={styles.btn}>
-            <button className={styles.back}>
+            <Link href="/admin/viewer" className={styles.back}>
               <Image src="/images/arrow-back.svg" alt="Atrás" width={24} height={24} loading="lazy" />
               <span>Regresar</span>
-            </button>
+            </Link>
           </div>
           <h2 style={{ flex: '2' }} className="text-2xl font-bold text-gray-900 flex justify-center">{film.title}</h2>
           <div className={styles.btn} />

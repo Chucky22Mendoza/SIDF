@@ -2,6 +2,7 @@ import { IFilmView } from "@/domain/Filme";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "../ui/table";
 import ListImageRow from "./list-image-row";
 import { useMemo } from "react";
+import EmptyTable from "../ui/EmptyTable";
 
 type Props = {
   films: IFilmView[];
@@ -39,6 +40,7 @@ function ListImages({ films }: Props) {
         </TableHeader>
         {films.length > 0 && <TableBody>{listRender}</TableBody>}
       </Table>
+      {films.length === 0 && <EmptyTable />}
     </div>
   );
 }

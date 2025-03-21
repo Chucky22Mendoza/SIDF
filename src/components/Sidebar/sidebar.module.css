@@ -2,7 +2,7 @@
   height: 100vh;
   width: 210px;
   min-width: 210px;
-  overflow: hidden;
+  /* overflow: hidden; */
   transition: all 300ms;
   display: flex;
   flex-direction: column;
@@ -226,7 +226,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.2rem;
 }
 
 .plan-refer {
