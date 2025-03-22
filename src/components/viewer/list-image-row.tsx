@@ -5,7 +5,7 @@ import { TableCell, TableRow } from "../ui/table";
 
 type Props = {
   film: IFilmView;
-  asPublic: boolean;
+  asPublic?: boolean;
 };
 
 function ListImageRow({ film, asPublic = false }: Props) {

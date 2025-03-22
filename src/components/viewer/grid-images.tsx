@@ -5,7 +5,7 @@ import EmptyTable from "../ui/EmptyTable";
 
 type Props ={
   films: IFilmView[];
-  asPublic: boolean;
+  asPublic?: boolean;
 };
 
 function GridImages({ films, asPublic = false }: Props) {

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 type Props = {
   film: IFilmView;
-  asPublic: boolean;
+  asPublic?: boolean;
 };
 
 function GridCard({ film, asPublic = false }: Props) {

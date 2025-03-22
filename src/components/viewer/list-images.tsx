@@ -6,7 +6,7 @@ import EmptyTable from "../ui/EmptyTable";
 
 type Props = {
   films: IFilmView[];
-  asPublic: boolean;
+  asPublic?: boolean;
 };
 
 function ListImages({ films, asPublic = false }: Props) {
