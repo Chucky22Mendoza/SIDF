@@ -5,11 +5,12 @@ import EmptyTable from "../ui/EmptyTable";
 
 type Props ={
   films: IFilmView[];
+  asPublic: boolean;
 };
 
-function GridImages({ films }: Props) {
+function GridImages({ films, asPublic = false }: Props) {
   const listRender = useMemo(() => (
-    films.map((film) => <GridCard key={film.id} film={film} />)
+    films.map((film) => <GridCard key={film.id} film={film} asPublic={asPublic} />)
   ), [films]);
 
   return (

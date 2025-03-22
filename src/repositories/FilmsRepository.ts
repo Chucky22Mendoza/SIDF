@@ -10,4 +10,7 @@ export interface FilmsRepository {
   getAllViewer: () => Promise<ResponseWrapper<IFilmView[]>>;
   searchViewer: (query: string) => Promise<ResponseWrapper<IFilmView[]>>;
   getOneViewer: (id: string) => Promise<ResponseWrapper<IFilmView>>;
+  getAllPublicViewer: () => Promise<ResponseWrapper<IFilmView[]>>;
+  searchPublicViewer: (query: string) => Promise<ResponseWrapper<IFilmView[]>>;
+  getOnePublicViewer: (id: string) => Promise<ResponseWrapper<IFilmView>>;
 }

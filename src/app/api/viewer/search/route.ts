@@ -1,9 +1,12 @@
 import { IFilmView } from "@/domain/Filme";
 import { ResponseWrapper } from "@/domain/Response";
 import prisma from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>> {
+export async function GET(req: NextRequest): Promise<NextResponse<ResponseWrapper<IFilmView[]>>> {
+  const searchParams = req.nextUrl.searchParams;
+  const query = searchParams.get('q') ?? '';
+
   try {
     const list = await prisma.filme.findMany({
       where: {
@@ -13,7 +16,115 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
               equals: null,
             }
           },
-        ]
+          {
+            Accesibilidad: {
+              every: {
+                consulta: true,
+              }
+            }
+          }
+        ],
+        OR: [
+          {
+            articulo: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            titulo: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            AND: [
+              {
+                articulo: { not: null },
+              },
+              {
+                articulo: {
+                  contains: query.split(" ")[0],
+                  mode: 'insensitive',
+                },
+              },
+              {
+                titulo: {
+                  contains: query.split(" ").slice(1).join(" "),
+                  mode: 'insensitive',
+                },
+              },
+            ],
+          },
+          {
+            det_directores: {
+              some: {
+                director: {
+                  name: {
+                    contains: query,
+                    mode: 'insensitive',
+                  }
+                }
+              }
+            }
+          },
+          {
+            DetGeneros: {
+              some: {
+                genero: {
+                  name: {
+                    contains: query,
+                    mode: 'insensitive',
+                  }
+                }
+              }
+            }
+          },
+          {
+            DetEstelares: {
+              some: {
+                estelar: {
+                  name: {
+                    contains: query,
+                    mode: 'insensitive',
+                  }
+                }
+              }
+            }
+          },
+          {
+            DetProducciones: {
+              some: {
+                produccion: {
+                  name: {
+                    contains: query,
+                    mode: 'insensitive',
+                  }
+                }
+              }
+            }
+          },
+          {
+            fondo: {
+              name: {
+                contains: query,
+                mode: 'insensitive',
+              }
+            },
+          },
+          {
+            Accesibilidad: {
+              some: {
+                archivo: {
+                  name: {
+                    contains: query,
+                    mode: 'insensitive',
+                  }
+                }
+              }
+            }
+          }
+        ],
       },
       select: {
         id: true,

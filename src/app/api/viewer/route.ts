@@ -13,6 +13,13 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
               equals: null,
             }
           },
+          {
+            Accesibilidad: {
+              every: {
+                consulta: true,
+              }
+            }
+          }
         ]
       },
       select: {

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Search } from 'lucide-react';
 
 type Props = {
   hasNavigation?: boolean;
@@ -11,9 +13,8 @@ export function Header({ hasNavigation = true }: Props) {
   const [hash, setHash] = useState('');
 
   useEffect(() => {
-    // Verificar si estamos en el cliente
     if (typeof window !== 'undefined') {
-      setHash(window.location.hash); // Obtiene el hash actual
+      setHash(window.location.hash);
     }
   }, []);
 
@@ -37,16 +38,17 @@ export function Header({ hasNavigation = true }: Props) {
           <h1 className="text-2xl font-bold text-red-950">SIDF</h1>
         </a>
         <div className="flex flex-1 items-center justify-end">
-          {
-            hasNavigation && (
-              <ul className="flex flex-1 items-center gap-5 justify-end">
-                <li><a className={`transition-all ${hash === '#inicio' || !hash ? 'text-red-900' : 'text-black'}`} href="#inicio">Inicio</a></li>
-                <li><a className={`transition-all ${hash === '#filmoteca' ? 'text-red-900' : 'text-black'}`} href="#filmoteca">Filmoteca</a></li>
-                <li><a className={`transition-all ${hash === '#materiales' ? 'text-red-900' : 'text-black'}`} href="#materiales">Materiales</a></li>
-                <li><a className={`transition-all ${hash === '#contacto' ? 'text-red-900' : 'text-black'}`} href="#contacto">Contacto</a></li>
-              </ul>
-            )
-          }
+          <ul className="flex flex-1 items-center gap-5 justify-end">
+            {hasNavigation && <li><a className={`transition-all ${hash === '#inicio' || !hash ? 'text-red-900' : 'text-black'}`} href="#inicio">Inicio</a></li>}
+            {hasNavigation && <li><a className={`transition-all ${hash === '#filmoteca' ? 'text-red-900' : 'text-black'}`} href="#filmoteca">Filmoteca</a></li>}
+            {hasNavigation && <li><a className={`transition-all ${hash === '#materiales' ? 'text-red-900' : 'text-black'}`} href="#materiales">Materiales</a></li>}
+            {hasNavigation && <li><a className={`transition-all ${hash === '#contacto' ? 'text-red-900' : 'text-black'}`} href="#contacto">Contacto</a></li>}
+            <li>
+              <Link className={`flex gap-1 transition-all ${hash === '#contacto' ? 'text-red-900' : 'text-black'}`} href="/search">
+                <Search />
+              </Link>
+            </li>
+          </ul>
         </div>
       </nav>
     </header>

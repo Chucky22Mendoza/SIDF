@@ -1,18 +1,22 @@
 import { IFilmView } from "@/domain/Filme";
 import { ResponseWrapper } from "@/domain/Response";
 import prisma from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>> {
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+export async function GET(_: NextRequest, { params }: Props): Promise<NextResponse<ResponseWrapper<IFilmView>>> {
   try {
-    const list = await prisma.filme.findMany({
+    const film = await prisma.filme.findFirst({
       where: {
         AND: [
           {
-            deletedAt: {
-              equals: null,
-            }
-          },
+            id: params.id,
+          }
         ]
       },
       select: {
@@ -100,12 +104,18 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
           }
         }
       },
-      orderBy: {
-        titulo: 'asc',
-      },
     });
 
-    const listTransform: IFilmView[] = list.map((film) => ({
+    if (!film) {
+      return NextResponse.json({
+        message: 'Filme no encontrado',
+        success: false,
+      }, {
+        status: 404,
+      });
+    }
+
+    const filmTransform: IFilmView = {
       id: film.id,
       title: `${film.articulo} ${film.titulo}`.trim(),
       copies: film.copias,
@@ -121,11 +131,11 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
       year: film.Descripcion[0].yearRelease,
       dimensions: `${film.Caracteristicas[0].ancho}x${film.Caracteristicas[0].alto} ${film.Caracteristicas[0].tipoMedida}`,
       format: `${film.Caracteristicas[0].tecnica.name} - ${film.Caracteristicas[0].soporte.name}`,
-    }));
+    };
 
     return NextResponse.json({
-      message: 'Filmes encontrados',
-      data: listTransform,
+      message: 'Filme encontrado',
+      data: filmTransform,
       success: true,
     }, {
       status: 200,

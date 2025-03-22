@@ -5,9 +5,10 @@ import Link from "next/link";
 
 type Props = {
   film: IFilmView;
+  asPublic: boolean;
 };
 
-function GridCard({ film }: Props) {
+function GridCard({ film, asPublic = false }: Props) {
   return (
     <div
       key={film.id}
@@ -43,7 +44,7 @@ function GridCard({ film }: Props) {
             {film.available ? 'Disponible' : 'No disponible'}
           </div>
           <Button>
-            <Link href={`/admin/viewer/${film.id}`} className="flex items-center text-blue-600 hover:text-blue-800">
+            <Link href={asPublic ? `/search/${film.id}` : `/admin/viewer/${film.id}`} className="flex items-center text-blue-600 hover:text-blue-800">
               Ver más
               <ArrowRight className="h-4 w-4 ml-1" />
             </Link>

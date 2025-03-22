@@ -6,11 +6,12 @@ import EmptyTable from "../ui/EmptyTable";
 
 type Props = {
   films: IFilmView[];
+  asPublic: boolean;
 };
 
-function ListImages({ films }: Props) {
+function ListImages({ films, asPublic = false }: Props) {
   const listRender = useMemo(() => (
-    films.map((film) => <ListImageRow key={film.id} film={film} />)
+    films.map((film) => <ListImageRow key={film.id} film={film} asPublic={asPublic} />)
   ), [films]);
 
   return (

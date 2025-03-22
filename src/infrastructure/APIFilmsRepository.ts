@@ -43,4 +43,16 @@ export class APIFilmsRepository implements FilmsRepository {
   async getOneViewer(id: string): Promise<ResponseWrapper<IFilmView>> {
     return await fetchWithAuth<IFilmView>(`/api/admin/film/viewer/${id}`)
   }
+
+  async getAllPublicViewer(): Promise<ResponseWrapper<IFilmView[]>> {
+    return await fetchWithAuth<IFilmView[]>(`/api/viewer`);
+  }
+
+  async searchPublicViewer(query: string): Promise<ResponseWrapper<IFilmView[]>> {
+    return await fetchWithAuth<IFilmView[]>(`/api/viewer/search?q=${query}`);
+  }
+
+  async getOnePublicViewer(id: string): Promise<ResponseWrapper<IFilmView>> {
+    return await fetchWithAuth<IFilmView>(`/api/viewer/${id}`)
+  }
 }

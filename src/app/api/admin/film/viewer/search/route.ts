@@ -16,13 +16,6 @@ export async function GET(req: NextRequest): Promise<NextResponse<ResponseWrappe
               equals: null,
             }
           },
-          {
-            Accesibilidad: {
-              every: {
-                consulta: true,
-              }
-            }
-          }
         ],
         OR: [
           {

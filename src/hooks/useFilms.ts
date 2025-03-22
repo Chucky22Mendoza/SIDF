@@ -6,13 +6,16 @@ import { ResponseWrapper } from '@/domain/Response';
 
 export interface IUseFilms {
   get: () => Promise<IFilmRow[]>;
-  getViewer: () => Promise<void>;
-  performViewerSearch: (query: string) => Promise<void>;
-  performFilm: (id: string) => Promise<void>;
   performSearch: (query: string) => Promise<void>;
   performPost: (data: IFilm) => Promise<ResponseWrapper<string>>;
   performPut: (id: string, data: IFilm) => Promise<ResponseWrapper<void>>;
   performDelete: (id: string) => Promise<ResponseWrapper<void>>;
+  getViewer: () => Promise<void>;
+  performViewerSearch: (query: string) => Promise<void>;
+  performFilm: (id: string) => Promise<void>;
+  getPublicViewer: () => Promise<void>;
+  performPublicViewerSearch: (query: string) => Promise<void>;
+  performPublicFilm: (id: string) => Promise<void>;
 }
 
 export const useFilms = (): IUseFilms => {
@@ -70,6 +73,27 @@ export const useFilms = (): IUseFilms => {
     }
   };
 
+  const getPublicViewer = async (): Promise<void> => {
+    const { data, success } = await filmsRepository.getAllPublicViewer();
+    if (success && data) {
+      setViewer(data);
+    }
+  };
+
+  const performPublicViewerSearch = async (query: string): Promise<void> => {
+    const { data, success } = await filmsRepository.searchPublicViewer(query);
+    if (success && data) {
+      setViewer(data);
+    }
+  };
+
+  const performPublicFilm = async (id: string): Promise<void> => {
+    const { data, success } = await filmsRepository.getOnePublicViewer(id);
+    if (success && data) {
+      setFilm(data);
+    }
+  };
+
   return {
     get,
     performSearch,
@@ -79,5 +103,8 @@ export const useFilms = (): IUseFilms => {
     getViewer,
     performFilm,
     performViewerSearch,
+    getPublicViewer,
+    performPublicViewerSearch,
+    performPublicFilm,
   };
 };

@@ -5,9 +5,10 @@ import { TableCell, TableRow } from "../ui/table";
 
 type Props = {
   film: IFilmView;
+  asPublic: boolean;
 };
 
-function ListImageRow({ film }: Props) {
+function ListImageRow({ film, asPublic = false }: Props) {
   return (
     <TableRow className="hover:bg-gray-50">
       <TableCell className="px-6 py-4">
@@ -43,7 +44,7 @@ function ListImageRow({ film }: Props) {
       </TableCell>
       <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <Button className="text-blue-600 hover:text-blue-900">
-          <Link href={`/admin/viewer/${film.id}`}>Ver detalles</Link>
+          <Link href={asPublic ? `/search/${film.id}` : `/admin/viewer/${film.id}`}>Ver detalles</Link>
         </Button>
       </TableCell>
     </TableRow>
