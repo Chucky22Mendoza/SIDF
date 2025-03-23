@@ -77,6 +77,7 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
     const { success, message } = await performDelete(catalog, id);
     if (success) {
       await get(catalog);
+      setListItem({ id: '', name: '' });
       setOpen(false);
       toast.success(message);
       return;
