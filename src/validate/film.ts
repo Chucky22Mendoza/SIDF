@@ -35,5 +35,5 @@ export const validateAccesibilityTab = (data: AccesibilityType): boolean => (
   data.fkIdArchivo !== '' &&
   data.fkIdCapturista !== '' &&
   data.fkIdCatalogador !== '' &&
-  data.yearCataloging > 2000
+  data.yearCataloging >= 1920
 );

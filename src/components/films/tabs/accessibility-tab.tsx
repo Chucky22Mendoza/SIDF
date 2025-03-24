@@ -174,7 +174,7 @@ export function AccessibilityTab() {
           input={
             <Input
               type="number"
-              min={2000}
+              min={1920}
               max={new Date().getFullYear()}
               value={accesibility.yearCataloging}
               onChange={(e) => setAccesibility({
