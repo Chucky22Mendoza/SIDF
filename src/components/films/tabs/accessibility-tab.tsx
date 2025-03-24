@@ -176,7 +176,7 @@ export function AccessibilityTab() {
               type="number"
               min={1920}
               max={new Date().getFullYear()}
-              value={accesibility.yearCataloging}
+              value={accesibility.yearCataloging === 0 ? '' : accesibility.yearCataloging}
               onChange={(e) => setAccesibility({
                 ...accesibility,
                 yearCataloging: Number(e.target.value),

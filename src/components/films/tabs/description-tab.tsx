@@ -64,7 +64,7 @@ export function DescriptionTab() {
               type="number"
               min={1920}
               max={new Date().getFullYear()}
-              value={description.yearRelease}
+              value={description.yearRelease === 0 ? '' : description.yearRelease}
               onChange={(e) => setDescription({
                 ...description,
                 yearRelease: Number(e.target.value),

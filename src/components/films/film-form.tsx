@@ -25,6 +25,14 @@ export function FilmForm() {
   const accesibility = useFilmeStore((state) => state.accesibility);
   const filmeId = useFilmeStore((state) => state.filmeId);
   const onNextGeneralHandler = (value: number) => {
+    if (general.titulo.length <= 3) {
+      toast.error('El título debe tener al menos 3 caracteres');
+      return;
+    }
+    if (general.copias === 0) {
+      toast.error('El número de copias debe ser mayor a 0');
+      return;
+    }
     if (!validateGeneralTab(general)) {
       toast.error('Por favor, llena todos los campos con *');
       return;
@@ -33,6 +41,10 @@ export function FilmForm() {
   };
 
   const onNextDescriptionHandler = (value: number) => {
+    if (description.yearRelease < 1920) {
+      toast.error('El año de estreno debe ser mayor a 1920');
+      return;
+    }
     if (!validateDescriptionTab(description)) {
       toast.error('Por favor, llena todos los campos con *');
       return;
@@ -41,6 +53,14 @@ export function FilmForm() {
   };
 
   const onNextCharacteristicsHandler = (value: number) => {
+    if (characteristics.alto === 0) {
+      toast.error('El alto debe ser mayor a 0');
+      return;
+    }
+    if (characteristics.ancho === 0) {
+      toast.error('El ancho debe ser mayor a 0');
+      return;
+    }
     if (!validateCharacteristicsTab(characteristics)) {
       toast.error('Por favor, llena todos los campos con *');
       return;
@@ -50,6 +70,10 @@ export function FilmForm() {
 
   const onNextAccesibilityHandler = async () => {
     setIsLoading(true);
+    if (accesibility.yearCataloging < 1920) {
+      toast.error('El año de catalogación debe ser mayor a 1920');
+      return;
+    }
     if (!validateAccesibilityTab(accesibility)) {
       toast.error('Por favor, llena todos los campos con *');
       return;
@@ -65,14 +89,15 @@ export function FilmForm() {
     };
 
     const { message, success } = filmeId ? await performPut(filmeId, data) : await performPost(data);
-    toast.dismiss();
 
     if (success) {
+      toast.dismiss();
       toast.success(message);
       setIsLoading(false);
       push('/admin/records');
       return;
     }
+    toast.dismiss();
     setIsLoading(false);
     toast.error(message);
   };

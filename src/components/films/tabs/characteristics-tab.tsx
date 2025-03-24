@@ -78,7 +78,7 @@ export function CharacteristicsTab() {
               type="number"
               min={0.1}
               placeholder="1.23"
-              value={characteristics.alto}
+              value={characteristics.alto === 0 ? '' : characteristics.alto}
               onChange={(e) => setCharacteristics({
                 ...characteristics,
                 alto: Number(e.target.value),
@@ -95,7 +95,7 @@ export function CharacteristicsTab() {
               type="number"
               min={0.1}
               placeholder="1.23"
-              value={characteristics.ancho}
+              value={characteristics.ancho === 0 ? '' : characteristics.ancho}
               onChange={(e) => setCharacteristics({
                 ...characteristics,
                 ancho: Number(e.target.value),

@@ -182,7 +182,7 @@ export function GeneralTab() {
             <Input
               type="number"
               min={1}
-              value={general.copias}
+              value={general.copias === 0 ? '' : general.copias}
               onChange={(e) => setGeneral({
                 ...general,
                 copias: Number(e.target.value),

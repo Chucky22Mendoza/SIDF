@@ -34,6 +34,7 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
   const setOpen = useDeleteModalStore((state) => state.setOpen);
   const onConfirmCallback = useDeleteModalStore((state) => state.onConfirmCallback);
   const onCancelCallback = useDeleteModalStore((state) => state.onCancelCallback);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [listItem, setListItem] = useState<ICatalogData>({
@@ -49,23 +50,30 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
   } = useCatalogs();
 
   const onConfirmForm = async () => {
+    setIsLoading(true);
     if (!listItem.name) {
       toast.error('El campo Nombre es obligatorio');
+      setIsLoading(false);
       return;
     }
+    toast.loading('Guardando...');
     const { success, message }: ResponseWrapper<string | void> = listItem.id
       ? await performPut(catalog, listItem)
       : await performPost(catalog, listItem.name);
 
     if (success) {
+      toast.dismiss();
       toast.success(message);
       await get(catalog);
       setListItem({ id: '', name: '' });
       setIsModalOpen(false);
+      setIsLoading(false);
       return;
     }
 
+    toast.dismiss();
     toast.error(message);
+    setIsLoading(false);
   };
 
   const onCancelForm = () => {
@@ -160,7 +168,7 @@ export function CatalogTable({ title, list, catalog }: CatalogTableProps) {
           maxHeight: 'none',
           height: 'auto',
         }}
-        allowConfirm
+        allowConfirm={!isLoading}
         confirmButtonText="Guardar"
         cancelButtonText="Cancelar"
         onCancel={onCancelForm}

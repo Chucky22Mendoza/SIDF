@@ -40,6 +40,7 @@ export function LoansList() {
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loanId, setLoanId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<LoanDataType>({
     name: '',
     curp: '',
@@ -118,6 +119,7 @@ export function LoansList() {
   };
 
   const onConfirmForm = async () => {
+    setIsLoading(true);
     if (
       !data.name ||
       !data.curp ||
@@ -126,18 +128,22 @@ export function LoansList() {
       !data.fk_id_filme
     ) {
       toast.error('Todos los campos con * son obligatorios');
+      setIsLoading(false);
       return;
     }
     if (data.name.length < 4) {
       toast.error('El nombre debe de ser mayor de 3 caracteres');
+      setIsLoading(false);
       return;
     }
     if (data.phone.length !== 10) {
       toast.error('El teléfono debe de ser de 10 caracteres');
+      setIsLoading(false);
       return;
     }
     if (data.curp.length !== 18) {
       toast.error('La CURP debe de ser de 18 caracteres');
+      setIsLoading(false);
       return;
     }
 
@@ -157,10 +163,12 @@ export function LoansList() {
       toast.success(message);
       await get();
       setIsModalOpen(false);
+      setIsLoading(false);
       return;
     }
 
     toast.error(message);
+    setIsLoading(false);
   };
 
   return (
@@ -208,7 +216,7 @@ export function LoansList() {
           maxHeight: 'none',
           height: 'auto',
         }}
-        allowConfirm
+        allowConfirm={!isLoading}
         confirmButtonText="Guardar"
         cancelButtonText="Cancelar"
         onCancel={onCancelForm}

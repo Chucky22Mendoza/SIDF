@@ -25,6 +25,7 @@ function UsersTable({ users }: Props) {
   const setOpen = useDeleteModalStore((state) => state.setOpen);
   const onConfirmCallback = useDeleteModalStore((state) => state.onConfirmCallback);
   const onCancelCallback = useDeleteModalStore((state) => state.onCancelCallback);
+  const [isLoading, setIsLoading] = useState(false);
   const [listItem, setListItem] = useState<UserUpdateType>({
     id: '',
     fullname: '',
@@ -35,6 +36,7 @@ function UsersTable({ users }: Props) {
   });
 
   const onConfirmForm = async () => {
+    setIsLoading(true);
     if (
       !listItem.password ||
       !listItem.email ||
@@ -43,33 +45,41 @@ function UsersTable({ users }: Props) {
       !listItem.nickname
     ) {
       toast.error('Todos los campos con * son obligatorios');
+      setIsLoading(false);
       return;
     }
     if (listItem.fullname.length < 4) {
       toast.error('El nombre debe de ser mayor de 3 caracteres');
+      setIsLoading(false);
       return;
     }
     if (listItem.password.length < 8) {
       toast.error('La contraseña debe de ser mayor a 7 caracteres');
+      setIsLoading(false);
       return;
     }
     if (listItem.nickname.length < 8) {
       toast.error('El usuario debe de ser mayor a 7 caracteres');
+      setIsLoading(false);
       return;
     }
 
+    toast.loading('Guardando usuario...');
     const { success, message }: ResponseWrapper<string | void> = listItem.id
       ? await performPut(listItem as UserUpdateType)
       : await performPost(listItem as UserCreateType);
 
     if (success) {
+      toast.dismiss();
       toast.success(message);
       await get();
       setIsModalOpen(false);
+      setIsLoading(false);
       return;
     }
-
+    toast.dismiss();
     toast.error(message);
+    setIsLoading(false);
   };
 
   const onConfirmDelete = async (id: string) => {
@@ -136,7 +146,7 @@ function UsersTable({ users }: Props) {
           maxHeight: 'none',
           height: 'auto',
         }}
-        allowConfirm
+        allowConfirm={!isLoading}
         confirmButtonText="Guardar"
         cancelButtonText="Cancelar"
         onCancel={() => setIsModalOpen(false)}
