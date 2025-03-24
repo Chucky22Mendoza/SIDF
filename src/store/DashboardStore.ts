@@ -10,6 +10,9 @@ export const defaultDashboard: IDashboardResponse = {
   loan_films: [],
   loans_graph: [],
   returns_graph: [],
+  fondos_graph: [],
+  typologies_graph: [],
+  collections_graph: [],
 };
 
 export interface IDashboardState {

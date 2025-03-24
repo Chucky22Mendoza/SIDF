@@ -7,6 +7,9 @@ export interface IDashboardResponse {
   loan_films: ILoanFilms[];
   loans_graph: IGraph[];
   returns_graph: IGraph[];
+  fondos_graph: IPieGraph[];
+  typologies_graph: IPieGraph[];
+  collections_graph: IPieGraph[];
 }
 
 export interface ILoanFilms {
@@ -17,5 +20,10 @@ export interface ILoanFilms {
 
 export interface IGraph {
   month: string;
+  total: number;
+}
+
+export interface IPieGraph {
+  name: string;
   total: number;
 }

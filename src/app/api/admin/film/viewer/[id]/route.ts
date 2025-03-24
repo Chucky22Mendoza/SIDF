@@ -101,6 +101,7 @@ export async function GET(_: NextRequest, { params }: Props): Promise<NextRespon
             consulta: true,
             reproduccion: true,
             reproduccionDigital: true,
+            observaciones: true,
           }
         }
       },
@@ -131,6 +132,7 @@ export async function GET(_: NextRequest, { params }: Props): Promise<NextRespon
       year: film.Descripcion[0].yearRelease,
       dimensions: `${film.Caracteristicas[0].ancho}x${film.Caracteristicas[0].alto} ${film.Caracteristicas[0].tipoMedida}`,
       format: `${film.Caracteristicas[0].tecnica.name} - ${film.Caracteristicas[0].soporte.name}`,
+      note: film.Accesibilidad[0].observaciones,
     };
 
     return NextResponse.json({

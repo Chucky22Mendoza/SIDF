@@ -7,13 +7,9 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
   try {
     const list = await prisma.filme.findMany({
       where: {
-        AND: [
-          {
-            deletedAt: {
-              equals: null,
-            }
-          },
-        ]
+        deletedAt: {
+          equals: null,
+        }
       },
       select: {
         id: true,
@@ -97,6 +93,7 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
             consulta: true,
             reproduccion: true,
             reproduccionDigital: true,
+            observaciones: true,
           }
         }
       },
@@ -121,6 +118,7 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IFilmView[]>>>
       year: film.Descripcion[0].yearRelease,
       dimensions: `${film.Caracteristicas[0].ancho}x${film.Caracteristicas[0].alto} ${film.Caracteristicas[0].tipoMedida}`,
       format: `${film.Caracteristicas[0].tecnica.name} - ${film.Caracteristicas[0].soporte.name}`,
+      note: film.Accesibilidad[0].observaciones,
     }));
 
     return NextResponse.json({

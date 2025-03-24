@@ -25,6 +25,7 @@ export interface IFilmView {
   format: string;
   copies: number;
   copies_available: number;
+  note?: string | null;
 }
 
 export type FilmeType = Omit<

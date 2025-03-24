@@ -17,7 +17,7 @@ export async function GET(req: NextRequest, { params }: Props): Promise<NextResp
     const query = q ? `%${q.toLowerCase()}%` : '%';
 
     if (catalog) {
-      const list = await prisma.$queryRawUnsafe(`SELECT * FROM ${catalog} WHERE lower(name) LIKE $1`, query) as ICatalogData[];
+      const list = await prisma.$queryRawUnsafe(`SELECT * FROM ${catalog} WHERE lower(name) LIKE $1 ORDER BY name ASC`, query) as ICatalogData[];
       return NextResponse.json({
         message: 'Busqueda de catálogo encontrada',
         data: list,

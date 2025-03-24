@@ -119,6 +119,17 @@ function FilmView({ film }: Props) {
             </div>
           </div>
 
+          <div className="mt-6">
+            <h4 className="text-sm font-medium text-gray-900">Observaciones:</h4>
+            <div className="mt-2">
+              <span
+                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-gray-800 mr-2 mb-2"
+              >
+                {film.note ?? 'Sin observaciones'}
+              </span>
+            </div>
+          </div>
+
           <div className="mt-6 flex items-center justify-between">
             {
               film.available

@@ -13,7 +13,7 @@ export async function GET(_: NextRequest, { params }: Props): Promise<NextRespon
   try {
     const { catalog } = params;
     if (catalog) {
-      const list = await prisma.$queryRawUnsafe(`SELECT * FROM ${catalog}`) as ICatalogData[];
+      const list = await prisma.$queryRawUnsafe(`SELECT * FROM ${catalog} ORDER BY name ASC`) as ICatalogData[];
       return NextResponse.json({
         message: 'Catálogo encontrado',
         data: list,

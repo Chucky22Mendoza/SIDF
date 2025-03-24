@@ -16,6 +16,8 @@ export async function POST(req: NextRequest): Promise<NextResponse<ResponseWrapp
     });
 
   } catch (error) {
+    console.log(error);
+
     return NextResponse.json({
       message: 'Error del servidor, intente de nuevo',
       success: false,

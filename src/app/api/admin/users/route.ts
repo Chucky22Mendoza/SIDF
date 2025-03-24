@@ -18,7 +18,12 @@ export async function GET(): Promise<NextResponse<ResponseWrapper<IUser[]>>> {
             name: true,
           },
         },
-      }
+      },
+      orderBy: {
+        rol: {
+          name: 'asc',
+        },
+      },
     }) as IUser[];
 
     return NextResponse.json({

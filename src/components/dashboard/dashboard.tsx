@@ -14,6 +14,7 @@ import { FormField } from "../shared/form-field";
 import { format, isAfter, isSameDay, subMonths } from "date-fns";
 import { toast } from "sonner";
 import debounce from "lodash.debounce";
+import PieChart from "../ui/pie-chart";
 
 function Dashboard() {
   const { get } = useDashboard();
@@ -49,6 +50,55 @@ function Dashboard() {
           <CardStat label="Total de copias" total={dashboard.copies} icon={<Copy className="text-red-600" />} />
           <CardStat label="Total de copias disponibles" total={dashboard.available} icon={<CopyCheck className="text-red-600" />} />
         </div>
+        <div className={styles.info}>
+          <div className={styles.graphs} style={{ flexDirection: 'row', alignSelf: 'stretch' }}>
+            <CardTitleGraph
+              title="Fondos"
+              style={{ flex: '1' }}
+            >
+              {
+                dashboard.fondos_graph && dashboard.fondos_graph.length > 0
+                  ? (
+                    <PieChart
+                      dataValues={dashboard.fondos_graph?.map((item) => item.total)}
+                      dataLabels={dashboard.fondos_graph?.map((item) => item.name)}
+                      colors={0}
+                    />
+                  ) : (<EmptyTable />)
+              }
+            </CardTitleGraph>
+            <CardTitleGraph
+              title="Tipologías"
+              style={{ flex: '1' }}
+            >
+              {
+                dashboard.typologies_graph && dashboard.typologies_graph.length > 0
+                  ? (
+                    <PieChart
+                      dataValues={dashboard.typologies_graph?.map((item) => item.total)}
+                      dataLabels={dashboard.typologies_graph?.map((item) => item.name)}
+                      colors={0}
+                    />
+                  ) : (<EmptyTable />)
+              }
+            </CardTitleGraph>
+            <CardTitleGraph
+              title="Colecciones"
+              style={{ flex: '1' }}
+            >
+              {
+                dashboard.collections_graph && dashboard.collections_graph.length > 0
+                  ? (
+                    <PieChart
+                      dataValues={dashboard.collections_graph?.map((item) => item.total)}
+                      dataLabels={dashboard.collections_graph?.map((item) => item.name)}
+                      colors={0}
+                    />
+                  ) : (<EmptyTable />)
+              }
+            </CardTitleGraph>
+          </div>
+        </div>
         <div className="flex flex-row self-stretch gap-1">
           <FormField
             label="Inicio"
@@ -82,16 +132,18 @@ function Dashboard() {
           />
         </div>
         <div className={styles.info}>
-          <CardTitleGraph
-            key="films-loans"
-            title="Los más prestados"
-          >
-            {
-              dashboard.loan_films && dashboard.loan_films.length > 0
-                ? (<TableFilms films={dashboard.loan_films} />)
-                : (<EmptyTable />)
-            }
-          </CardTitleGraph>
+          <div className={styles.graphs}>
+            <CardTitleGraph
+              key="films-loans"
+              title="Los más prestados"
+            >
+              {
+                dashboard.loan_films && dashboard.loan_films.length > 0
+                  ? (<TableFilms films={dashboard.loan_films} />)
+                  : (<EmptyTable />)
+              }
+            </CardTitleGraph>
+          </div>
           <div className={styles.graphs}>
             <CardTitleGraph
               key="copies-loans"
