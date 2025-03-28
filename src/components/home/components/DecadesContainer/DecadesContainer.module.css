@@ -94,10 +94,18 @@
 @media (max-width: 767px) {
   .images {
     flex-direction: column;
+    padding: .25rem;
+    padding-bottom: .5rem;
   }
 
   .gallery {
-    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
+  }
+
+  .card {
+    height: 60px;
+    width: 40px;
+    border-radius: 6px;
   }
 }
 
