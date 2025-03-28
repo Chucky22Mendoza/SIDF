@@ -16,7 +16,7 @@ function SectionContainer({ children, bg, className, hash }: Props) {
         backgroundColor: bg === 'tomato' ? 'tomato' : '#E7E6E1',
       }}
       className={cn(
-        'flex min-h-screen h-full w-full max-w-full scroll-smooth',
+        'flex min-h-[100dvh] h-full w-full max-w-[100dvw] scroll-smooth',
         className,
       )}
     >

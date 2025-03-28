@@ -47,7 +47,7 @@ export function DecadesContainer({ images, isOpen, onClose }: Props) {
       }}
     >
       <img className={className} src={currentImage.path} alt={`Decada de ${currentImage.decade}`} loading="lazy" />
-      <div className="flex gap-5 self-stretch items-end p-10 flex-1">
+      <div className={styles.images}>
         <div className={`max-w-md ${styles.glass}`}>
           <h1 className="text-white text-4xl font-extrabold">{`Decada de ${currentImage.decade}`}</h1>
           <p className="text-white text-lg">{currentImage.description}</p>

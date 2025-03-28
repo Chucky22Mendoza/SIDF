@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import styles from './footer.module.scss';
 
 export function Footer() {
   return (
-    <footer className="flex gap-10 py-10 px-20">
+    <footer className={styles.footer}>
       <Image src="/images/cultura_colima.png" width={200} height={98} className="object-contain" alt="" />
       <div className="flex flex-col items-center justify-center">
         <Image src="/images/secretaria_de_cultura.jpg" width={200} height={107} className="object-contain" alt="" />

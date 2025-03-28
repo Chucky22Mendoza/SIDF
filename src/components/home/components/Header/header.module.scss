@@ -1,0 +1,67 @@
+.header {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 100dvw;
+  position: fixed;
+  padding: 0.5rem 1rem;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  > nav {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    > a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    > div {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: flex-end;
+
+      > ul {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: 1.25rem;
+        justify-content: flex-end;
+      }
+
+      > button {
+        display: none;
+
+        &:focus-within > ul {
+          display: flex;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .header > nav {
+    > a > h1 {
+      display: none;
+    }
+    > div {
+      > ul {
+        display: none;
+      }
+
+      > button {
+        display: flex;
+      }
+    }
+  }
+}

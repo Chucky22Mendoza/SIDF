@@ -30,7 +30,7 @@ export function CarouselHome({ images, orientation }: Props) {
 
   return (
     <Carousel
-      className="max-w-[594px]"
+      className="max-w-[594px] w-full"
       style={{
         float: orientation,
         margin: `0 ${orientation === 'right' ? '0' : '20px'} 0 ${orientation === 'left' ? '0' : '20px'}`
@@ -41,7 +41,7 @@ export function CarouselHome({ images, orientation }: Props) {
           images.map(({ path, title, author }, index) => (
             <CarouselItem key={`${title}-${index}`}>
               <figure>
-                <Image className="block w-full" src={path} alt={title} width={594} height={581} style={{ objectFit: 'cover' }} loading="lazy" />
+                <img className="block w-full max-w-[100%]" src={path} alt={title} style={{ objectFit: 'cover' }} loading="lazy" />
                 <figcaption className="text-center mt-2">
                   <h5>{title}</h5>
                   <p>{author}</p>

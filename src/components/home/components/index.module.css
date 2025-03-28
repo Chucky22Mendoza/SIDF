@@ -4,3 +4,11 @@
   background: url(../../../../public/images/slider/uno.jpg) no-repeat 100% 100%;
   background-size: cover;
 }
+
+@media (max-width: 767px) {
+  .bg-img {
+    background: url(../../../../public/images/slider/uno.jpg) no-repeat;
+    background-size: cover;
+    height: auto;
+  }
+}
