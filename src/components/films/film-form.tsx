@@ -137,7 +137,7 @@ export function FilmForm() {
               onClickPrev: setStep,
             }
           ]}
-          title="Pasos para Crear Registro"
+          title={`Pasos para ${filmeId ? 'Editar' : 'Crear'} Registro`}
           prevLabel={step === 0 ? 'Regresar' : 'Atrás'}
           nextLabel={step === 3 ? 'Finalizar' : 'Continuar'}
           step={step}
